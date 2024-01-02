@@ -1,0 +1,264 @@
+@font-face {
+  font-family: Monoton;
+  src: url(../../Fonts/Monoton-Regular.ttf);
+}
+
+.mineContainer {
+  width:60vh;
+  height:60vh;
+  position: absolute;
+  top:30%;
+  left:30%;
+}
+
+.dark {
+  background:#000;
+}
+
+.light {
+  background: #313a37;
+}
+
+.mineTile{
+  height: 10%;
+  width: 10%;
+  color: #fff;
+  text-align: center;
+  display: inline-block;
+  font-size: 25px;
+  margin: 0 0 3px 4px;
+  vertical-align: top;
+}
+
+.mineDark {
+  background-color: #313a37;
+}
+
+.mineLight {
+  background-color: rgb(252, 233, 204);
+  color: #000;
+}
+
+
+.not-A-Mine {
+  background: rgb(21, 151, 21);
+}
+
+.mine {
+  background: rgb(232, 12, 12);
+}
+
+.flaggedTile {
+  background: orange;
+}
+
+.mineTile:nth-child(-n+9) {
+  margin-top: 2.5%;
+}
+
+.mineTile:nth-child(9n+1) {
+  margin-left: 1.5%;
+}
+
+.mineDark:not(.flaggedTile, .mine, .not-A-Mine):hover{
+  background-color: rgb(44, 101, 247);
+  transition: all 200ms ease-in;
+  cursor: pointer;
+}
+
+.mineLight:not(.flaggedTile, .mine, .not-A-Mine):hover{
+  background-color: rgb(71, 116, 231);
+  transition: all 200ms ease-in;
+  cursor: pointer;
+}
+
+.hiddenMine {
+  display: none;
+}
+
+.timerContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  position: absolute;
+  top: 25vh;
+  left: 43vw;
+}
+
+.timer {
+  font-family: Monoton;
+  font-size: 2.7vh;
+}
+
+.timer-dark {
+  color:rgb(252, 233, 204)
+}
+
+.timer-light {
+  color: #000;
+}
+
+.play {
+  width: 0;
+  height: 0;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  margin: -26px 0 0 140px;
+}
+
+.pause {
+  width:5px;
+  height: 20px;
+  background: transparent;
+  border-left: 5px solid;
+  border-right: 5px solid;
+  margin: -26px 0 0 140px;
+}
+
+.timer-play-light {
+  border-left: 15px solid black;
+}
+
+.timer-play-dark {
+  border-left: 15px solid rgb(252, 233, 204);
+}g
+
+.timer-pause-light {
+  border-color: #000;
+}
+
+.timer-pause-dark {
+  border-color: rgb(252, 233, 204);
+}
+
+.pausedScreen {
+  width: 100%;
+  height: 100%;
+  background: rgb(252, 233, 204, 0.91);
+  position: absolute;
+  z-index: 2;
+  margin-top: -59vh;
+  color: #000;
+  font-family: Monoton;
+  font-size: 20px;
+  /* transition: 2s; */
+}
+
+.pausedScreenDark {
+  width: 100%;
+  height: 100%;
+  background: rgb(21, 21, 21, 0.91);
+  position: absolute;
+  z-index: 2;
+  margin-top: -59vh;
+  color: rgb(252, 233, 204);
+  font-family: Monoton;
+  font-size: 20px;
+  /* transition: 2s; */
+}
+
+.pausedScreenDark span{
+  margin-left: 10px;
+}
+
+.pausedScreen span{
+  margin-left: 10px;
+}
+
+.pauseIcon {
+  height: 16px;
+  width: 5px;
+  border-left: 4px solid rgb(252, 233, 204);
+  border-right: 4px solid rgb(252, 233, 204);
+  margin: 45% 0 0 37%;
+  display: inline-block;
+}
+
+.pausedScreen .pauseIcon {
+  border-color: #000;
+}
+
+/* @keyframes inAnimation {
+  0% {
+    opacity: 0;
+    visibility: hidden;
+  }
+  100% {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+@keyframes outAnimation {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
+} */
+
+.reset {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border-top: 4px solid rgb(252, 233, 204);
+  border-left: 4px solid rgb(252, 233, 204);
+  border-right: 4px solid transparent;
+  border-bottom: 4px solid rgb(252, 233, 204);
+  transform: rotate(60deg);
+  margin: 5px 0 0 100px;
+}
+
+.reset-light {
+  border-top: 4px solid #000;
+  border-left: 4px solid #000;
+  border-right: 4px solid transparent;
+  border-bottom: 4px solid #000;
+}
+
+.reset-end {
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 8px solid rgb(252, 233, 204);
+  transform: rotate(315deg);
+  margin-left: 10px;
+}
+
+.reset-end-light {
+  border-top: 8px solid #000;
+}
+
+.gameOverText {
+  position: absolute;
+  top: 46%;
+  left: 33%;
+}
+
+.youWinText {
+  position: absolute;
+  top: 46%;
+  left: 33%;
+}
+
+.flag {
+  width: 5%;
+  height: 75%;
+  background: #000;
+  margin: 15% 0 0 30%;
+}
+
+.base {
+  width: 0;
+  height: 0;
+  border-bottom: 10px solid transparent;
+  border-left: 24px solid white;
+  border-top: 10px solid transparent;
+}
+
+.base-red {
+  border-left: 24px solid red;
+}
