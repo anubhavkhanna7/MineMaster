@@ -209,6 +209,7 @@
   border-bottom: 4px solid rgb(252, 233, 204);
   transform: rotate(60deg);
   margin: 5px 0 0 100px;
+  cursor: pointer;
 }
 
 .reset-light {

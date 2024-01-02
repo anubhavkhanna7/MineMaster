@@ -102,7 +102,7 @@ function MineGrid({isDarkMode}: {isDarkMode: boolean}) {
 
         {isBombClicked && (
           <div className={isDarkMode ? 'pausedScreenDark' : 'pausedScreen'} style={mountedStyle} >
-            <span className='gameOverText'>Game Over</span>
+            <span className='gameOverText'>GAME OVER</span>
           </div>
         )}
         {!isBombClicked && allMinesIsolated && (

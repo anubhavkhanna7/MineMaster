@@ -1,4 +1,4 @@
-function createdGridWithMines(totalTiles, mineCount) {
+function createdGridWithMines(totalTiles: number, mineCount: number) {
   let grid = Array(totalTiles).fill(0);
   while (mineCount > 0) {
     let mineTile = Math.floor(Math.random() * (totalTiles));
@@ -10,7 +10,7 @@ function createdGridWithMines(totalTiles, mineCount) {
   return grid;
 }
 
-function fillMineHints(createdGrid, colLength) {
+function fillMineHints(createdGrid: Array<number>, colLength: number) {
   let rowLength = Math.floor(createdGrid.length/colLength);
   for (let rowIndex = 0; rowIndex < rowLength; rowIndex++) {
     for (let colIndex = 0; colIndex<colLength; colIndex++) {
@@ -59,7 +59,7 @@ function fillMineHints(createdGrid, colLength) {
 
 export default function calculateMatrix(size = 9, dificulty = 'EASY', customMines = 0) {
   let totalTiles = size * size;
-  let countOfMines;
+  let countOfMines = 0;
   switch (dificulty) {
     case 'NOVICE':
       countOfMines = (totalTiles*10)/100;
