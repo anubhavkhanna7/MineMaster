@@ -17,29 +17,41 @@ function fillMineHints(createdGrid: Array<number>, colLength: number) {
       let sum = 0;
       if(createdGrid[rowIndex*colLength + colIndex] !== -1) {
         if(rowIndex === 0 && colIndex === 0) {
+          // first row and first column
           sum+= createdGrid[rowIndex*colLength + colIndex+1] === -1 ? 1 : 0;
           sum+= createdGrid[(rowIndex+1)*colLength + colIndex] === -1 ? 1 : 0;
           sum+= createdGrid[(rowIndex+1)*colLength + colIndex+1] === -1 ? 1 : 0;
         } else if (rowIndex === 0 && colIndex !== colLength-1) {
+          // First row and not last column
           sum+= createdGrid[rowIndex*colLength + colIndex-1] ===-1 ? 1 : 0;
           sum+= createdGrid[rowIndex*colLength + colIndex+1] ===-1 ? 1 : 0;
           sum+= createdGrid[(rowIndex+1)*colLength + colIndex-1] ===-1 ? 1 : 0;
           sum+= createdGrid[(rowIndex+1)*colLength + colIndex] ===-1 ? 1 : 0;
           sum+= createdGrid[(rowIndex+1)*colLength + colIndex+1] ===-1 ? 1 : 0;
         } else if (rowIndex === 0 && colIndex === colLength-1) {
+          // first row and last column
           sum+= createdGrid[rowIndex*colLength + colIndex-1] ===-1 ? 1 : 0;
           sum+= createdGrid[(rowIndex+1)*colLength + colIndex-1] ===-1 ? 1 : 0;
           sum+= createdGrid[(rowIndex+1)*colLength + colIndex] ===-1 ? 1 : 0;
         } else if (rowIndex !== rowLength-1 && colIndex === 0) {
+          // not last row and first column 
           sum+= createdGrid[(rowIndex-1)*colLength + colIndex] ===-1 ? 1 : 0;
           sum+= createdGrid[(rowIndex+1)*colLength + colIndex] ===-1 ? 1 : 0;
           sum+= createdGrid[(rowIndex-1)*colLength + colIndex + 1] ===-1 ? 1 : 0;
           sum+= createdGrid[rowIndex*colLength + colIndex + 1] ===-1 ? 1 : 0;
           sum+= createdGrid[(rowIndex+1)*colLength + colIndex + 1] ===-1 ? 1 : 0;
         } else if (rowIndex === rowLength-1 && colIndex === 0) {
+          // last row and first column
           sum+= createdGrid[(rowIndex-1)*colLength + colIndex] ===-1 ? 1 : 0;
           sum+= createdGrid[(rowIndex-1)*colLength + colIndex + 1] ===-1 ? 1 : 0;
           sum+= createdGrid[rowIndex*colLength + colIndex + 1] ===-1 ? 1 : 0;
+        } else if (rowIndex !== rowLength-1 && rowIndex !== 0 && colIndex === colLength-1) {
+          // Middle rows and last column
+          sum+= createdGrid[(rowIndex-1)*colLength + colIndex] ===-1 ? 1 : 0;
+          sum+= createdGrid[(rowIndex-1)*colLength + colIndex -1] ===-1 ? 1 : 0;
+          sum+= createdGrid[(rowIndex+1)*colLength + colIndex] ===-1 ? 1 : 0;
+          sum+= createdGrid[(rowIndex+1)*colLength + colIndex -1] ===-1 ? 1 : 0;
+          sum+= createdGrid[rowIndex*colLength + colIndex - 1] ===-1 ? 1 : 0;
         } else {
           sum+= createdGrid[(rowIndex-1)*colLength + colIndex - 1] ===-1 ? 1 : 0;
           sum+= createdGrid[rowIndex*colLength + colIndex - 1] ===-1 ? 1 : 0;

@@ -35,8 +35,8 @@ export default function Timer(
 
   const convertToTime = () => {
     const seconds = Math.abs(timer%60);
-    const minutes = Math.floor(timer/60);
-    const hours = minutes < 60 ? 0 : Math.floor(minutes/60);
+    const minutes = (Math.floor(timer/60))%60;
+    const hours = Math.floor(timer/60) < 60 ? 0 : Math.floor(Math.floor(timer/60)/60);
     return `${hours <= 9 ? `0${hours}` : hours} : ${minutes <= 9 ? `0${minutes}` : minutes} : ${seconds <= 9 ? `0${seconds}` : seconds}`;
   }
 

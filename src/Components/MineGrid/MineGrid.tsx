@@ -88,7 +88,7 @@ function MineGrid({isDarkMode}: {isDarkMode: boolean}) {
   }
 
   return (
-    <div>
+    <div className='mineGridContainer'>
       <Timer
         allMinesIsolated={allMinesIsolated}
         isBombClicked={isBombClicked}

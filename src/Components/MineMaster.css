@@ -7,13 +7,9 @@ body {
   background: #191818;
 }
 
-.title {
-  font-family: Monoton;
-  font-size: 20vh;
-  left: 10vh;
-  position: absolute;
-  top: 25vh;
-  transition: transform 750ms ease;
+.container {
+  display: flex;
+  flex-direction: column;
 }
 
 .lightTitle {
@@ -27,9 +23,6 @@ body {
 .btnContainer {
   display: flex;
   flex-direction: row;
-  left: 30vw;
-  position: absolute;
-  top: 60vh;
 }
 
 .btnContainer div {
@@ -44,10 +37,135 @@ body {
   font-family: Monoton;
   color: #fff;
   cursor: pointer;
-  margin: 0 10vw 0 0;
+  margin: 2vh 0 0 0;
 }
 
 .title-top {
+  font-family: Monoton;
   font-size: 5vh;
-  transform: translate(-60px, -25vh);
+  /* transform: translate(-60px, -25vh); */
+}
+
+.title {
+  font-family: Monoton;
+  font-size: 20vh;
+  transition: transform 750ms ease;
+  margin: 0 0 0 0;
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+  .title {
+    font-family: Monoton;
+    font-size: 10vh;
+    transition: transform 750ms ease;
+    margin: auto;
+    margin-bottom: 35%;
+  }
+
+  .title-top {
+    font-family: Monoton;
+    font-size: 4vh;
+    transform: translate(-55px, -14vh);
+  }
+
+  .btnContainer {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+  }
+
+  .switchContainer {
+    margin-bottom: 22%;
+    position: absolute;
+    top: 2%;
+    right: 4%;
+  }
+
+  .container {
+    margin-top: 30%;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+  .title {
+    font-family: Monoton;
+    font-size: 12vh;
+    transition: transform 750ms ease;
+    margin: 20% auto 15%;
+  }
+
+  .title-top {
+    font-family: Monoton;
+    font-size: 4vh;
+    transform: translate(-55px, -14vh);
+  }
+
+  .btnContainer {
+    flex-direction: column;
+    margin: auto;
+  }
+
+  .btnContainer div {
+    margin-bottom: 5%;
+  }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+  .title {
+    font-family: Monoton;
+    font-size: 13vh;
+    transition: transform 750ms ease;
+    margin: 15% 0 15% 5%;
+  }
+
+  .title-top {
+    font-family: Monoton;
+    font-size: 4vh;
+    transform: translate(0px, -10vh);
+  }
+
+  .btnContainer {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+  }
+
+  .btnContainer div {
+    margin-bottom: 5%;
+  }
+}
+
+@media only screen and (min-width: 900px) {
+  .title {
+    font-family: Monoton;
+    font-size: 20vh;
+    transition: transform 750ms ease;
+    margin: 7% 0 0 10%;
+  }
+  .title-top {
+    font-family: Monoton;
+    font-size: 4vh;
+    transform: translate(-6vw, -7vh);
+  }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1275px) {
+  .title {
+    font-family: Monoton;
+    font-size: 20vh;
+    transition: transform 750ms ease;
+    margin: 7% 0 15% 8%;
+  }
+  .title-top {
+    font-family: Monoton;
+    font-size: 4vh;
+    transform: translate(-6vw, -11vh);
+  }
 }

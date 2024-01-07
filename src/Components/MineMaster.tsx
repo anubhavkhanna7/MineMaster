@@ -17,16 +17,18 @@ export default function MineMaster() {
         isDarkMode={isDarkMode}
         updateDarkModeState={updateDarkModeState}
       />
-      <span className={`title ${isDarkMode ? 'lightTitle' : 'darkTitle'} ${isGameStarted ? 'title-top' : ''}`}>
-        Mine Master
-      </span>
+      <div className='container'>
+        <span className={`title ${isDarkMode ? 'lightTitle' : 'darkTitle'} ${isGameStarted ? 'title-top' : ''}`}>
+          Mine Master
+        </span>
 
-      {!isGameStarted && (
-        <div className='btnContainer'>
-          <div>HOW TO PLAY</div>
-          <div onClick={() => setGameStartStatus(true)}>START GAME</div>
-        </div>
-      )}
+        {!isGameStarted && (
+          <div className='btnContainer'>
+            <div onClick={() => setGameStartStatus(true)}>START GAME</div>
+            <div>HOW TO PLAY</div>
+          </div>
+        )}
+      </div>
       {isGameStarted && <MineGrid isDarkMode={isDarkMode} />}
     </div>
   );

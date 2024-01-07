@@ -25,7 +25,7 @@ export default function ViewModeSwitch({isDarkMode, updateDarkModeState} : {isDa
     </div>
   );
   return (
-    <div>
+    <div className='switchContainer'>
       <div className={isDarkMode ? 'background-switch' : 'background-switch-day'} onClick={() => updateDarkModeState(!isDarkMode)}>
         <div className={isDarkMode ? darkMode : lightMode}>
           {isDarkMode && (
