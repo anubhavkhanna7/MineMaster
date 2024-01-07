@@ -23,6 +23,7 @@ function MineGrid({isDarkMode}: {isDarkMode: boolean}) {
 
   const bind = useLongPress(() => undefined, {
     onFinish: (event, meta: {context ?:number|undefined}) => {
+      event.preventDefault();
       !isBombClicked && onLongClickCell(meta.context || 0);
     },
     onCancel: (event, meta: {context ?:number|undefined}) => {
