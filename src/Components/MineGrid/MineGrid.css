@@ -28,6 +28,9 @@
   font-size: 25px;
   margin: 0 0 3px 4px;
   vertical-align: top;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
 }
 
 .mineDark {
