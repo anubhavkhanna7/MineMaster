@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/MineMaster/static/css/main.1b072c00.css",
-    "main.js": "/MineMaster/static/js/main.46f287bf.js",
+    "main.js": "/MineMaster/static/js/main.d1e48275.js",
     "static/js/787.3af10c4b.chunk.js": "/MineMaster/static/js/787.3af10c4b.chunk.js",
     "static/media/Monoton-Regular.ttf": "/MineMaster/static/media/Monoton-Regular.1f3bd420f1198c5c85e8.ttf",
     "index.html": "/MineMaster/index.html",
     "main.1b072c00.css.map": "/MineMaster/static/css/main.1b072c00.css.map",
-    "main.46f287bf.js.map": "/MineMaster/static/js/main.46f287bf.js.map",
+    "main.d1e48275.js.map": "/MineMaster/static/js/main.d1e48275.js.map",
     "787.3af10c4b.chunk.js.map": "/MineMaster/static/js/787.3af10c4b.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.1b072c00.css",
-    "static/js/main.46f287bf.js"
+    "static/js/main.d1e48275.js"
   ]
 }
