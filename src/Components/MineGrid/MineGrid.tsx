@@ -436,10 +436,11 @@ function MineGrid({isDarkMode}: {isDarkMode: boolean}) {
     setOpenedCellsList(new Array(mineSize*mineSize).fill(0));
     updateGeneratedGrid(calculateMatrix(mineSize, dificulty));
     setIsBombClicked(false);
+    setAllMinesIsolated(false);
   }
 
   return (
-    <div className='mineGridContainer'>
+    <div className='mineGridContainer' onContextMenu={(e) => {e.preventDefault();}}>
       <Timer
         allMinesIsolated={allMinesIsolated}
         isBombClicked={isBombClicked}
