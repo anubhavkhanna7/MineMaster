@@ -21,13 +21,27 @@ function MineGrid({isDarkMode}: {isDarkMode: boolean}) {
     (matchAllOpenedTiles(openedCellsList, generatedGrid) && setAllMinesIsolated(true));
   }, [openedCellsList]);
 
+  const blinkerTile = (tileList: Array<Number>) => {
+    tileList.forEach((tileIndex) => {
+      // @ts-ignore
+      openedCellsList[tileIndex] !== 1 && document.getElementById(`mine-${tileIndex}`)?.classList.add('blinker');
+    })
+
+    setTimeout(() => {
+      tileList.forEach((tileIndex: Number) => {
+        document.getElementById(`mine-${tileIndex}`)?.classList.remove('blinker')
+      })
+    }, 1000);
+  }
+
   const bind = useLongPress(() => undefined, {
     onFinish: (event, meta: {context ?:number|undefined}) => {
       event.preventDefault();
       !isBombClicked && onLongClickCell(meta.context || 0);
     },
     onCancel: (event, meta: {context ?:number|undefined}) => {
-      !isBombClicked && onClickCell(meta.context || 0);
+      // @ts-ignore
+      !isBombClicked && event.button !==2 && onClickCell(meta.context || 0);
     },
     filterEvents: (event) => true,
     threshold: 500,
@@ -39,7 +53,7 @@ function MineGrid({isDarkMode}: {isDarkMode: boolean}) {
   const handlers = (selectedIndex: number) => bind(selectedIndex);
 
   const onClickCell = (selectedIndex: number) => {
-    const updatedOpenedCellList = [...openedCellsList];
+    let updatedOpenedCellList = [...openedCellsList];
 
     if (generatedGrid[selectedIndex] === -1) {
       setIsBombClicked(true);
@@ -51,177 +65,276 @@ function MineGrid({isDarkMode}: {isDarkMode: boolean}) {
       let bombClicked = false;
       if (selectedIndex < mineSize) {
         if (selectedIndex === 0) {
-          if (updatedOpenedCellList[selectedIndex + 1] !== -1) {
-            updatedOpenedCellList[selectedIndex + 1] = 1;
-            bombClicked = bombClicked || generatedGrid[selectedIndex + 1] === -1;
-          }
-          if (updatedOpenedCellList[selectedIndex + mineSize] !== -1) {
-            updatedOpenedCellList[selectedIndex + mineSize] = 1;
-            bombClicked = bombClicked || generatedGrid[selectedIndex + mineSize] === -1;
-          }
-          if (updatedOpenedCellList[selectedIndex + mineSize + 1] !== -1) {
-            updatedOpenedCellList[selectedIndex + mineSize + 1] = 1;
-            bombClicked = bombClicked || generatedGrid[selectedIndex + mineSize + 1] === -1;
+          if (updatedOpenedCellList[selectedIndex + 1] !== -1 && updatedOpenedCellList[selectedIndex + mineSize] !== -1 && updatedOpenedCellList[selectedIndex + mineSize + 1] !== -1) {
+            blinkerTile([selectedIndex + 1, selectedIndex + mineSize, selectedIndex + mineSize + 1]);
+          } else {
+            if (updatedOpenedCellList[selectedIndex + 1] !== -1) {
+              updatedOpenedCellList[selectedIndex + 1] = 1;
+              updatedOpenedCellList = generatedGrid[selectedIndex + 1] === 0 ? openSurroundingCells(selectedIndex+1, updatedOpenedCellList, generatedGrid, mineSize) : updatedOpenedCellList;
+              bombClicked = bombClicked || generatedGrid[selectedIndex + 1] === -1;
+            }
+            if (updatedOpenedCellList[selectedIndex + mineSize] !== -1) {
+              updatedOpenedCellList[selectedIndex + mineSize] = 1;
+              updatedOpenedCellList = generatedGrid[selectedIndex + mineSize] === 0 ? openSurroundingCells(selectedIndex+mineSize, updatedOpenedCellList, generatedGrid, mineSize) : updatedOpenedCellList;
+              bombClicked = bombClicked || generatedGrid[selectedIndex + mineSize] === -1;
+            }
+            if (updatedOpenedCellList[selectedIndex + mineSize + 1] !== -1) {
+              updatedOpenedCellList[selectedIndex + mineSize + 1] = 1;
+              updatedOpenedCellList = generatedGrid[selectedIndex + mineSize + 1] === 0 ? openSurroundingCells(selectedIndex+mineSize+1, updatedOpenedCellList, generatedGrid, mineSize) : updatedOpenedCellList;
+              bombClicked = bombClicked || generatedGrid[selectedIndex + mineSize + 1] === -1;
+            }
           }
         } else if (selectedIndex === mineSize-1) {
-          if (updatedOpenedCellList[selectedIndex - 1] !== -1) {
-            updatedOpenedCellList[selectedIndex - 1] = 1;
-            bombClicked = bombClicked || generatedGrid[selectedIndex - 1] === -1;
-          }
-          if (updatedOpenedCellList[selectedIndex + mineSize] !== -1) {
-            updatedOpenedCellList[selectedIndex + mineSize] = 1;
-            bombClicked = bombClicked || generatedGrid[selectedIndex + mineSize] === -1;
-          }
-          if (updatedOpenedCellList[selectedIndex + mineSize - 1] !== -1) {
-            updatedOpenedCellList[selectedIndex + mineSize - 1] = 1;
-            bombClicked = bombClicked || generatedGrid[selectedIndex + mineSize - 1] === -1;
+          if (updatedOpenedCellList[selectedIndex - 1] !== -1 && updatedOpenedCellList[selectedIndex + mineSize] !== -1 && updatedOpenedCellList[selectedIndex + mineSize - 1] !== -1) {
+            blinkerTile([selectedIndex - 1, selectedIndex + mineSize, selectedIndex + mineSize - 1]);
+          } else {
+            if (updatedOpenedCellList[selectedIndex - 1] !== -1) {
+              updatedOpenedCellList[selectedIndex - 1] = 1;
+              updatedOpenedCellList = generatedGrid[selectedIndex - 1] === 0 ? openSurroundingCells(selectedIndex-1, updatedOpenedCellList, generatedGrid, mineSize) : updatedOpenedCellList;
+              bombClicked = bombClicked || generatedGrid[selectedIndex - 1] === -1;
+            }
+            if (updatedOpenedCellList[selectedIndex + mineSize] !== -1) {
+              updatedOpenedCellList[selectedIndex + mineSize] = 1;
+              updatedOpenedCellList = generatedGrid[selectedIndex + mineSize] === 0 ? openSurroundingCells(selectedIndex + mineSize, updatedOpenedCellList, generatedGrid, mineSize) : updatedOpenedCellList;
+              bombClicked = bombClicked || generatedGrid[selectedIndex + mineSize] === -1;
+            }
+            if (updatedOpenedCellList[selectedIndex + mineSize - 1] !== -1) {
+              updatedOpenedCellList[selectedIndex + mineSize - 1] = 1;
+              updatedOpenedCellList = generatedGrid[selectedIndex + mineSize - 1] === 0 ? openSurroundingCells(selectedIndex + mineSize -1, updatedOpenedCellList, generatedGrid, mineSize) : updatedOpenedCellList;
+              bombClicked = bombClicked || generatedGrid[selectedIndex + mineSize - 1] === -1;
+            }
           }
         } else {
-          if (updatedOpenedCellList[selectedIndex + 1] !== -1) {
-            updatedOpenedCellList[selectedIndex + 1] = 1;
-            bombClicked = bombClicked || generatedGrid[selectedIndex + 1] === -1;
-          }
-          if (updatedOpenedCellList[selectedIndex - 1] !== -1) {
-            updatedOpenedCellList[selectedIndex - 1] = 1;
-            bombClicked = bombClicked || generatedGrid[selectedIndex - 1] === -1;
-          }
-          if (updatedOpenedCellList[selectedIndex + mineSize] !== -1) {
-            updatedOpenedCellList[selectedIndex + mineSize] = 1;
-            bombClicked = bombClicked || generatedGrid[selectedIndex + mineSize] === -1;
-          }
-          if (updatedOpenedCellList[selectedIndex + mineSize + 1] !== -1) {
-            updatedOpenedCellList[selectedIndex + mineSize + 1] = 1;
-            bombClicked = bombClicked || generatedGrid[selectedIndex + mineSize + 1] === -1;
-          }
-          if (updatedOpenedCellList[selectedIndex + mineSize - 1] !== -1) {
-            updatedOpenedCellList[selectedIndex + mineSize - 1] = 1;
-            bombClicked = bombClicked || generatedGrid[selectedIndex + mineSize - 1] === -1;
+          if (updatedOpenedCellList[selectedIndex + 1] !== -1
+            && updatedOpenedCellList[selectedIndex - 1] !== -1
+            && updatedOpenedCellList[selectedIndex + mineSize] !== -1
+            && updatedOpenedCellList[selectedIndex + mineSize + 1] !== -1
+            && updatedOpenedCellList[selectedIndex + mineSize - 1] !== -1) {
+              blinkerTile([selectedIndex + 1, selectedIndex - 1, selectedIndex + mineSize, selectedIndex + mineSize + 1, selectedIndex + mineSize - 1]);
+          } else {
+            if (updatedOpenedCellList[selectedIndex + 1] !== -1) {
+              updatedOpenedCellList[selectedIndex + 1] = 1;
+              updatedOpenedCellList = generatedGrid[selectedIndex + 1] === 0 ? openSurroundingCells(selectedIndex + 1, updatedOpenedCellList, generatedGrid, mineSize) : updatedOpenedCellList;
+              bombClicked = bombClicked || generatedGrid[selectedIndex + 1] === -1;
+            }
+            if (updatedOpenedCellList[selectedIndex - 1] !== -1) {
+              updatedOpenedCellList[selectedIndex - 1] = 1;
+              updatedOpenedCellList = generatedGrid[selectedIndex - 1] === 0 ? openSurroundingCells(selectedIndex - 1, updatedOpenedCellList, generatedGrid, mineSize) : updatedOpenedCellList;
+              bombClicked = bombClicked || generatedGrid[selectedIndex - 1] === -1;
+            }
+            if (updatedOpenedCellList[selectedIndex + mineSize] !== -1) {
+              updatedOpenedCellList[selectedIndex + mineSize] = 1;
+              updatedOpenedCellList = generatedGrid[selectedIndex + mineSize] === 0 ? openSurroundingCells(selectedIndex + mineSize, updatedOpenedCellList, generatedGrid, mineSize) : updatedOpenedCellList;
+              bombClicked = bombClicked || generatedGrid[selectedIndex + mineSize] === -1;
+            }
+            if (updatedOpenedCellList[selectedIndex + mineSize + 1] !== -1) {
+              updatedOpenedCellList[selectedIndex + mineSize + 1] = 1;
+              updatedOpenedCellList = generatedGrid[selectedIndex + mineSize + 1] === 0 ? openSurroundingCells(selectedIndex + mineSize + 1, updatedOpenedCellList, generatedGrid, mineSize) : updatedOpenedCellList;
+              bombClicked = bombClicked || generatedGrid[selectedIndex + mineSize + 1] === -1;
+            }
+            if (updatedOpenedCellList[selectedIndex + mineSize - 1] !== -1) {
+              updatedOpenedCellList[selectedIndex + mineSize - 1] = 1;
+              updatedOpenedCellList = generatedGrid[selectedIndex + mineSize - 1] === 0 ? openSurroundingCells(selectedIndex + mineSize - 1, updatedOpenedCellList, generatedGrid, mineSize) : updatedOpenedCellList;
+              bombClicked = bombClicked || generatedGrid[selectedIndex + mineSize - 1] === -1;
+            }
           }
         }
       } else if (selectedIndex >= (mineSize*(mineSize-1))) {
         if (selectedIndex%mineSize === 0) {
-          if (updatedOpenedCellList[selectedIndex + 1] !== -1) {
-            updatedOpenedCellList[selectedIndex + 1] = 1;
-            bombClicked = bombClicked || generatedGrid[selectedIndex + 1] === -1;
-          }
-          if (updatedOpenedCellList[selectedIndex - mineSize] !== -1) {
-            updatedOpenedCellList[selectedIndex - mineSize] = 1;
-            bombClicked = bombClicked || generatedGrid[selectedIndex - mineSize] === -1;
-          }
-          if (updatedOpenedCellList[selectedIndex - mineSize + 1] !== -1) {
-            updatedOpenedCellList[selectedIndex - mineSize + 1] = 1;
-            bombClicked = bombClicked || generatedGrid[selectedIndex - mineSize + 1] === -1;
+          if (updatedOpenedCellList[selectedIndex + 1] !== -1 && updatedOpenedCellList[selectedIndex - mineSize] !== -1 && updatedOpenedCellList[selectedIndex - mineSize + 1] !== -1) {
+            blinkerTile([selectedIndex + 1, selectedIndex - mineSize, selectedIndex - mineSize + 1]);
+          } else {
+            if (updatedOpenedCellList[selectedIndex + 1] !== -1) {
+              updatedOpenedCellList[selectedIndex + 1] = 1;
+              updatedOpenedCellList = generatedGrid[selectedIndex + 1] === 0 ? openSurroundingCells(selectedIndex + 1, updatedOpenedCellList, generatedGrid, mineSize) : updatedOpenedCellList;
+              bombClicked = bombClicked || generatedGrid[selectedIndex + 1] === -1;
+            }
+            if (updatedOpenedCellList[selectedIndex - mineSize] !== -1) {
+              updatedOpenedCellList[selectedIndex - mineSize] = 1;
+              updatedOpenedCellList = generatedGrid[selectedIndex - mineSize] === 0 ? openSurroundingCells(selectedIndex - mineSize, updatedOpenedCellList, generatedGrid, mineSize) : updatedOpenedCellList;
+              bombClicked = bombClicked || generatedGrid[selectedIndex - mineSize] === -1;
+            }
+            if (updatedOpenedCellList[selectedIndex - mineSize + 1] !== -1) {
+              updatedOpenedCellList[selectedIndex - mineSize + 1] = 1;
+              updatedOpenedCellList = generatedGrid[selectedIndex - mineSize + 1] === 0 ? openSurroundingCells(selectedIndex - mineSize + 1, updatedOpenedCellList, generatedGrid, mineSize) : updatedOpenedCellList;
+              bombClicked = bombClicked || generatedGrid[selectedIndex - mineSize + 1] === -1;
+            }
           }
         } else if (selectedIndex%mineSize === mineSize-1) {
-          if (updatedOpenedCellList[selectedIndex - 1] !== -1) {
-            updatedOpenedCellList[selectedIndex - 1] = 1;
-            bombClicked = bombClicked || generatedGrid[selectedIndex - 1] === -1;
-          }
-          if (updatedOpenedCellList[selectedIndex - mineSize] !== -1) {
-            updatedOpenedCellList[selectedIndex - mineSize] = 1;
-            bombClicked = bombClicked || generatedGrid[selectedIndex - mineSize] === -1;
-          }
-          if (updatedOpenedCellList[selectedIndex - mineSize - 1] !== -1) {
-            updatedOpenedCellList[selectedIndex - mineSize - 1] = 1;
-            bombClicked = bombClicked || generatedGrid[selectedIndex - mineSize - 1] === -1;
+          if (updatedOpenedCellList[selectedIndex - 1] !== -1 && updatedOpenedCellList[selectedIndex - mineSize] !== -1 && updatedOpenedCellList[selectedIndex - mineSize - 1] !== -1) {
+            blinkerTile([selectedIndex - 1, selectedIndex - mineSize, selectedIndex - mineSize - 1]);
+          } else {
+            if (updatedOpenedCellList[selectedIndex - 1] !== -1) {
+              updatedOpenedCellList[selectedIndex - 1] = 1;
+              updatedOpenedCellList = generatedGrid[selectedIndex - 1] === 0 ? openSurroundingCells(selectedIndex - 1, updatedOpenedCellList, generatedGrid, mineSize) : updatedOpenedCellList;
+              bombClicked = bombClicked || generatedGrid[selectedIndex - 1] === -1;
+            }
+            if (updatedOpenedCellList[selectedIndex - mineSize] !== -1) {
+              updatedOpenedCellList[selectedIndex - mineSize] = 1;
+              updatedOpenedCellList = generatedGrid[selectedIndex - mineSize] === 0 ? openSurroundingCells(selectedIndex - mineSize, updatedOpenedCellList, generatedGrid, mineSize) : updatedOpenedCellList;
+              bombClicked = bombClicked || generatedGrid[selectedIndex - mineSize] === -1;
+            }
+            if (updatedOpenedCellList[selectedIndex - mineSize - 1] !== -1) {
+              updatedOpenedCellList[selectedIndex - mineSize - 1] = 1;
+              updatedOpenedCellList = generatedGrid[selectedIndex - mineSize - 1] === 0 ? openSurroundingCells(selectedIndex - mineSize - 1, updatedOpenedCellList, generatedGrid, mineSize) : updatedOpenedCellList;
+              bombClicked = bombClicked || generatedGrid[selectedIndex - mineSize - 1] === -1;
+            }
           }
         } else {
-          if (updatedOpenedCellList[selectedIndex + 1] !== -1) {
-            updatedOpenedCellList[selectedIndex + 1] = 1;
-            bombClicked = bombClicked || generatedGrid[selectedIndex + 1] === -1;
-          }
-          if (updatedOpenedCellList[selectedIndex - 1] !== -1) {
-            updatedOpenedCellList[selectedIndex - 1] = 1;
-            bombClicked = bombClicked || generatedGrid[selectedIndex - 1] === -1;
-          }
-          if (updatedOpenedCellList[selectedIndex - mineSize] !== -1) {
-            updatedOpenedCellList[selectedIndex - mineSize] = 1;
-            bombClicked = bombClicked || generatedGrid[selectedIndex - mineSize] === -1;
-          }
-          if (updatedOpenedCellList[selectedIndex - mineSize + 1] !== -1) {
-            updatedOpenedCellList[selectedIndex - mineSize + 1] = 1;
-            bombClicked = bombClicked || generatedGrid[selectedIndex - mineSize + 1] === -1;
-          }
-          if (updatedOpenedCellList[selectedIndex - mineSize - 1] !== -1) {
-            updatedOpenedCellList[selectedIndex - mineSize - 1] = 1;
-            bombClicked = bombClicked || generatedGrid[selectedIndex - mineSize - 1] === -1;
+          if (updatedOpenedCellList[selectedIndex + 1] !== -1
+            && updatedOpenedCellList[selectedIndex - 1] !== -1
+            && updatedOpenedCellList[selectedIndex - mineSize] !== -1
+            && updatedOpenedCellList[selectedIndex - mineSize + 1] !== -1
+            && updatedOpenedCellList[selectedIndex - mineSize - 1] !== -1) {
+              blinkerTile([selectedIndex + 1, selectedIndex - 1, selectedIndex - mineSize, selectedIndex - mineSize + 1, selectedIndex - mineSize - 1]);
+          } else {
+            if (updatedOpenedCellList[selectedIndex + 1] !== -1) {
+              updatedOpenedCellList[selectedIndex + 1] = 1;
+              updatedOpenedCellList = generatedGrid[selectedIndex + 1] === 0 ? openSurroundingCells(selectedIndex + 1, updatedOpenedCellList, generatedGrid, mineSize) : updatedOpenedCellList;
+              bombClicked = bombClicked || generatedGrid[selectedIndex + 1] === -1;
+            }
+            if (updatedOpenedCellList[selectedIndex - 1] !== -1) {
+              updatedOpenedCellList[selectedIndex - 1] = 1;
+              updatedOpenedCellList = generatedGrid[selectedIndex - 1] === 0 ? openSurroundingCells(selectedIndex - 1, updatedOpenedCellList, generatedGrid, mineSize) : updatedOpenedCellList;
+              bombClicked = bombClicked || generatedGrid[selectedIndex - 1] === -1;
+            }
+            if (updatedOpenedCellList[selectedIndex - mineSize] !== -1) {
+              updatedOpenedCellList[selectedIndex - mineSize] = 1;
+              updatedOpenedCellList = generatedGrid[selectedIndex - mineSize] === 0 ? openSurroundingCells(selectedIndex - mineSize, updatedOpenedCellList, generatedGrid, mineSize) : updatedOpenedCellList;
+              bombClicked = bombClicked || generatedGrid[selectedIndex - mineSize] === -1;
+            }
+            if (updatedOpenedCellList[selectedIndex - mineSize + 1] !== -1) {
+              updatedOpenedCellList[selectedIndex - mineSize + 1] = 1;
+              updatedOpenedCellList = generatedGrid[selectedIndex - mineSize + 1] === 0 ? openSurroundingCells(selectedIndex - mineSize + 1, updatedOpenedCellList, generatedGrid, mineSize) : updatedOpenedCellList;
+              bombClicked = bombClicked || generatedGrid[selectedIndex - mineSize + 1] === -1;
+            }
+            if (updatedOpenedCellList[selectedIndex - mineSize - 1] !== -1) {
+              updatedOpenedCellList[selectedIndex - mineSize - 1] = 1;
+              updatedOpenedCellList = generatedGrid[selectedIndex - mineSize - 1] === 0 ? openSurroundingCells(selectedIndex - mineSize - 1, updatedOpenedCellList, generatedGrid, mineSize) : updatedOpenedCellList;
+              bombClicked = bombClicked || generatedGrid[selectedIndex - mineSize - 1] === -1;
+            }
           }
         }
       } else {
         if (selectedIndex%mineSize === 0) {
-          if (updatedOpenedCellList[selectedIndex + 1] !== -1) {
-            updatedOpenedCellList[selectedIndex + 1] = 1;
-            bombClicked = bombClicked || generatedGrid[selectedIndex + 1] === -1;
-          }
-          if (updatedOpenedCellList[selectedIndex + mineSize] !== -1) {
-            updatedOpenedCellList[selectedIndex + mineSize] = 1;
-            bombClicked = bombClicked || generatedGrid[selectedIndex + mineSize] === -1;
-          }
-          if (updatedOpenedCellList[selectedIndex + mineSize + 1] !== -1) {
-            updatedOpenedCellList[selectedIndex + mineSize + 1] = 1;
-            bombClicked = bombClicked || generatedGrid[selectedIndex + mineSize + 1] === -1;
-          }
-          if (updatedOpenedCellList[selectedIndex - mineSize] !== -1) {
-            updatedOpenedCellList[selectedIndex - mineSize] = 1;
-            bombClicked = bombClicked || generatedGrid[selectedIndex - mineSize] === -1;
-          }
-          if (updatedOpenedCellList[selectedIndex - mineSize + 1] !== -1) {
-            updatedOpenedCellList[selectedIndex - mineSize + 1] = 1;
-            bombClicked = bombClicked || generatedGrid[selectedIndex - mineSize + 1] === -1;
+          if (updatedOpenedCellList[selectedIndex + 1] !== -1
+            && updatedOpenedCellList[selectedIndex + mineSize] !== -1
+            && updatedOpenedCellList[selectedIndex + mineSize + 1] !== -1
+            && updatedOpenedCellList[selectedIndex - mineSize] !== -1
+            && updatedOpenedCellList[selectedIndex - mineSize + 1] !== -1) {
+              blinkerTile([selectedIndex + 1, selectedIndex + mineSize, selectedIndex + mineSize + 1, selectedIndex - mineSize, selectedIndex - mineSize + 1]);
+          } else {
+            if (updatedOpenedCellList[selectedIndex + 1] !== -1) {
+              updatedOpenedCellList[selectedIndex + 1] = 1;
+              updatedOpenedCellList = generatedGrid[selectedIndex + 1] === 0 ? openSurroundingCells(selectedIndex + 1, updatedOpenedCellList, generatedGrid, mineSize) : updatedOpenedCellList;
+              bombClicked = bombClicked || generatedGrid[selectedIndex + 1] === -1;
+            }
+            if (updatedOpenedCellList[selectedIndex + mineSize] !== -1) {
+              updatedOpenedCellList[selectedIndex + mineSize] = 1;
+              updatedOpenedCellList = generatedGrid[selectedIndex + mineSize] === 0 ? openSurroundingCells(selectedIndex + mineSize, updatedOpenedCellList, generatedGrid, mineSize) : updatedOpenedCellList;
+              bombClicked = bombClicked || generatedGrid[selectedIndex + mineSize] === -1;
+            }
+            if (updatedOpenedCellList[selectedIndex + mineSize + 1] !== -1) {
+              updatedOpenedCellList[selectedIndex + mineSize + 1] = 1;
+              updatedOpenedCellList = generatedGrid[selectedIndex + mineSize + 1] === 0 ? openSurroundingCells(selectedIndex + mineSize + 1, updatedOpenedCellList, generatedGrid, mineSize) : updatedOpenedCellList;
+              bombClicked = bombClicked || generatedGrid[selectedIndex + mineSize + 1] === -1;
+            }
+            if (updatedOpenedCellList[selectedIndex - mineSize] !== -1) {
+              updatedOpenedCellList[selectedIndex - mineSize] = 1;
+              updatedOpenedCellList = generatedGrid[selectedIndex - mineSize] === 0 ? openSurroundingCells(selectedIndex - mineSize, updatedOpenedCellList, generatedGrid, mineSize) : updatedOpenedCellList;
+              bombClicked = bombClicked || generatedGrid[selectedIndex - mineSize] === -1;
+            }
+            if (updatedOpenedCellList[selectedIndex - mineSize + 1] !== -1) {
+              updatedOpenedCellList[selectedIndex - mineSize + 1] = 1;
+              updatedOpenedCellList = generatedGrid[selectedIndex - mineSize + 1] === 0 ? openSurroundingCells(selectedIndex - mineSize + 1, updatedOpenedCellList, generatedGrid, mineSize) : updatedOpenedCellList;
+              bombClicked = bombClicked || generatedGrid[selectedIndex - mineSize + 1] === -1;
+            }
           }
         } else if (selectedIndex%mineSize === mineSize - 1) {
-          if (updatedOpenedCellList[selectedIndex - 1] !== -1) {
-            updatedOpenedCellList[selectedIndex - 1] = 1;
-            bombClicked = bombClicked || generatedGrid[selectedIndex - 1] === -1;
-          }
-          if (updatedOpenedCellList[selectedIndex + mineSize] !== -1) {
-            updatedOpenedCellList[selectedIndex + mineSize] = 1;
-            bombClicked = bombClicked || generatedGrid[selectedIndex + mineSize] === -1;
-          }
-          if (updatedOpenedCellList[selectedIndex + mineSize - 1] !== -1) {
-            updatedOpenedCellList[selectedIndex + mineSize - 1] = 1;
-            bombClicked = bombClicked || generatedGrid[selectedIndex + mineSize - 1] === -1;
-          }
-          if (updatedOpenedCellList[selectedIndex - mineSize] !== -1) {
-            updatedOpenedCellList[selectedIndex - mineSize] = 1;
-            bombClicked = bombClicked || generatedGrid[selectedIndex - mineSize] === -1;
-          }
-          if (updatedOpenedCellList[selectedIndex - mineSize - 1] !== -1) {
-            updatedOpenedCellList[selectedIndex - mineSize - 1] = 1;
-            bombClicked = bombClicked || generatedGrid[selectedIndex - mineSize - 1] === -1;
+          if (updatedOpenedCellList[selectedIndex - 1] !== -1
+            && updatedOpenedCellList[selectedIndex + mineSize] !== -1
+            && updatedOpenedCellList[selectedIndex + mineSize - 1] !== -1
+            && updatedOpenedCellList[selectedIndex - mineSize] !== -1
+            && updatedOpenedCellList[selectedIndex - mineSize - 1] !== -1) {
+            blinkerTile([selectedIndex - 1, selectedIndex + mineSize, selectedIndex + mineSize - 1, selectedIndex - mineSize, selectedIndex - mineSize - 1]);
+          } else {
+            if (updatedOpenedCellList[selectedIndex - 1] !== -1) {
+              updatedOpenedCellList[selectedIndex - 1] = 1;
+              updatedOpenedCellList = generatedGrid[selectedIndex - 1] === 0 ? openSurroundingCells(selectedIndex - 1, updatedOpenedCellList, generatedGrid, mineSize) : updatedOpenedCellList;
+              bombClicked = bombClicked || generatedGrid[selectedIndex - 1] === -1;
+            }
+            if (updatedOpenedCellList[selectedIndex + mineSize] !== -1) {
+              updatedOpenedCellList[selectedIndex + mineSize] = 1;
+              updatedOpenedCellList = generatedGrid[selectedIndex + mineSize] === 0 ? openSurroundingCells(selectedIndex + mineSize, updatedOpenedCellList, generatedGrid, mineSize) : updatedOpenedCellList;
+              bombClicked = bombClicked || generatedGrid[selectedIndex + mineSize] === -1;
+            }
+            if (updatedOpenedCellList[selectedIndex + mineSize - 1] !== -1) {
+              updatedOpenedCellList[selectedIndex + mineSize - 1] = 1;
+              updatedOpenedCellList = generatedGrid[selectedIndex + mineSize - 1] === 0 ? openSurroundingCells(selectedIndex + mineSize - 1, updatedOpenedCellList, generatedGrid, mineSize) : updatedOpenedCellList;
+              bombClicked = bombClicked || generatedGrid[selectedIndex + mineSize - 1] === -1;
+            }
+            if (updatedOpenedCellList[selectedIndex - mineSize] !== -1) {
+              updatedOpenedCellList[selectedIndex - mineSize] = 1;
+              updatedOpenedCellList = generatedGrid[selectedIndex - mineSize] === 0 ? openSurroundingCells(selectedIndex - mineSize, updatedOpenedCellList, generatedGrid, mineSize) : updatedOpenedCellList;
+              bombClicked = bombClicked || generatedGrid[selectedIndex - mineSize] === -1;
+            }
+            if (updatedOpenedCellList[selectedIndex - mineSize - 1] !== -1) {
+              updatedOpenedCellList[selectedIndex - mineSize - 1] = 1;
+              updatedOpenedCellList = generatedGrid[selectedIndex - mineSize - 1] === 0 ? openSurroundingCells(selectedIndex - mineSize - 1, updatedOpenedCellList, generatedGrid, mineSize) : updatedOpenedCellList;
+              bombClicked = bombClicked || generatedGrid[selectedIndex - mineSize - 1] === -1;
+            }
           }
         } else {
-          if (updatedOpenedCellList[selectedIndex + 1] !== -1) {
-            updatedOpenedCellList[selectedIndex + 1] = 1;
-            bombClicked = bombClicked || generatedGrid[selectedIndex + 1] === -1;
-          }
-          if (updatedOpenedCellList[selectedIndex - 1] !== -1) {
-            updatedOpenedCellList[selectedIndex - 1] = 1;
-            bombClicked = bombClicked || generatedGrid[selectedIndex - 1] === -1;
-          }
-          if (updatedOpenedCellList[selectedIndex + mineSize] !== -1) {
-            updatedOpenedCellList[selectedIndex + mineSize] = 1;
-            bombClicked = bombClicked || generatedGrid[selectedIndex + mineSize] === -1;
-          }
-          if (updatedOpenedCellList[selectedIndex + mineSize - 1] !== -1) {
-            updatedOpenedCellList[selectedIndex + mineSize - 1] = 1;
-            bombClicked = bombClicked || generatedGrid[selectedIndex + mineSize - 1] === -1;
-          }
-          if (updatedOpenedCellList[selectedIndex + mineSize + 1] !== -1) {
-            updatedOpenedCellList[selectedIndex + mineSize + 1] = 1;
-            bombClicked = bombClicked || generatedGrid[selectedIndex + mineSize + 1] === -1;
-          }
-          if (updatedOpenedCellList[selectedIndex - mineSize] !== -1) {
-            updatedOpenedCellList[selectedIndex - mineSize] = 1;
-            bombClicked = bombClicked || generatedGrid[selectedIndex - mineSize] === -1;
-          }
-          if (updatedOpenedCellList[selectedIndex - mineSize - 1] !== -1) {
-            updatedOpenedCellList[selectedIndex - mineSize - 1] = 1;
-            bombClicked = bombClicked || generatedGrid[selectedIndex - mineSize - 1] === -1;
-          }
-          if (updatedOpenedCellList[selectedIndex - mineSize + 1] !== -1) {
-            updatedOpenedCellList[selectedIndex - mineSize + 1] = 1;
-            bombClicked = bombClicked || generatedGrid[selectedIndex - mineSize + 1] === -1;
+          if (updatedOpenedCellList[selectedIndex + 1] !== -1
+            && updatedOpenedCellList[selectedIndex - 1] !== -1
+            && updatedOpenedCellList[selectedIndex + mineSize] !== -1
+            && updatedOpenedCellList[selectedIndex - mineSize] !== -1
+            && updatedOpenedCellList[selectedIndex + mineSize - 1] !== -1
+            && updatedOpenedCellList[selectedIndex - mineSize - 1] !== -1
+            && updatedOpenedCellList[selectedIndex + mineSize + 1] !== -1
+            && updatedOpenedCellList[selectedIndex - mineSize + 1] !== -1) {
+            blinkerTile([selectedIndex + 1, selectedIndex - 1, selectedIndex + mineSize, selectedIndex + mineSize - 1, selectedIndex + mineSize + 1,selectedIndex - mineSize, selectedIndex - mineSize -1, selectedIndex - mineSize + 1]);
+          } else {
+            if (updatedOpenedCellList[selectedIndex + 1] !== -1) {
+              updatedOpenedCellList[selectedIndex + 1] = 1;
+              updatedOpenedCellList = generatedGrid[selectedIndex + 1] === 0 ? openSurroundingCells(selectedIndex + 1, updatedOpenedCellList, generatedGrid, mineSize) : updatedOpenedCellList;
+              bombClicked = bombClicked || generatedGrid[selectedIndex + 1] === -1;
+            }
+            if (updatedOpenedCellList[selectedIndex - 1] !== -1) {
+              updatedOpenedCellList[selectedIndex - 1] = 1;
+              updatedOpenedCellList = generatedGrid[selectedIndex - 1] === 0 ? openSurroundingCells(selectedIndex - 1, updatedOpenedCellList, generatedGrid, mineSize) : updatedOpenedCellList;
+              bombClicked = bombClicked || generatedGrid[selectedIndex - 1] === -1;
+            }
+            if (updatedOpenedCellList[selectedIndex + mineSize] !== -1) {
+              updatedOpenedCellList[selectedIndex + mineSize] = 1;
+              updatedOpenedCellList = generatedGrid[selectedIndex + mineSize] === 0 ? openSurroundingCells(selectedIndex + mineSize, updatedOpenedCellList, generatedGrid, mineSize) : updatedOpenedCellList;
+              bombClicked = bombClicked || generatedGrid[selectedIndex + mineSize] === -1;
+            }
+            if (updatedOpenedCellList[selectedIndex + mineSize - 1] !== -1) {
+              updatedOpenedCellList[selectedIndex + mineSize - 1] = 1;
+              updatedOpenedCellList = generatedGrid[selectedIndex + mineSize - 1] === 0 ? openSurroundingCells(selectedIndex + mineSize - 1, updatedOpenedCellList, generatedGrid, mineSize) : updatedOpenedCellList;
+              bombClicked = bombClicked || generatedGrid[selectedIndex + mineSize - 1] === -1;
+            }
+            if (updatedOpenedCellList[selectedIndex + mineSize + 1] !== -1) {
+              updatedOpenedCellList[selectedIndex + mineSize + 1] = 1;
+              updatedOpenedCellList = generatedGrid[selectedIndex + mineSize + 1] === 0 ? openSurroundingCells(selectedIndex + mineSize + 1, updatedOpenedCellList, generatedGrid, mineSize) : updatedOpenedCellList;
+              bombClicked = bombClicked || generatedGrid[selectedIndex + mineSize + 1] === -1;
+            }
+            if (updatedOpenedCellList[selectedIndex - mineSize] !== -1) {
+              updatedOpenedCellList[selectedIndex - mineSize] = 1;
+              updatedOpenedCellList = generatedGrid[selectedIndex - mineSize] === 0 ? openSurroundingCells(selectedIndex - mineSize, updatedOpenedCellList, generatedGrid, mineSize) : updatedOpenedCellList;
+              bombClicked = bombClicked || generatedGrid[selectedIndex - mineSize] === -1;
+            }
+            if (updatedOpenedCellList[selectedIndex - mineSize - 1] !== -1) {
+              updatedOpenedCellList[selectedIndex - mineSize - 1] = 1;
+              updatedOpenedCellList = generatedGrid[selectedIndex - mineSize - 1] === 0 ? openSurroundingCells(selectedIndex - mineSize - 1, updatedOpenedCellList, generatedGrid, mineSize) : updatedOpenedCellList;
+              bombClicked = bombClicked || generatedGrid[selectedIndex - mineSize - 1] === -1;
+            }
+            if (updatedOpenedCellList[selectedIndex - mineSize + 1] !== -1) {
+              updatedOpenedCellList[selectedIndex - mineSize + 1] = 1;
+              updatedOpenedCellList = generatedGrid[selectedIndex - mineSize + 1] === 0 ? openSurroundingCells(selectedIndex - mineSize + 1, updatedOpenedCellList, generatedGrid, mineSize) : updatedOpenedCellList;
+              bombClicked = bombClicked || generatedGrid[selectedIndex - mineSize + 1] === -1;
+            }
           }
         }
       }
@@ -252,7 +365,10 @@ function MineGrid({isDarkMode}: {isDarkMode: boolean}) {
       <div
         className={`mineTile  ${isDarkMode ? 'mineDark' : 'mineLight'} ${openedCellsList[index] === -1 && 'flaggedTile'} ${openedCellsList[index] === 1 && 'not-A-Mine'} ${openedCellsList[index] === 1 && gridValue === -1 && 'mine'}`}
         {...handlers(index)}
+        onContextMenu={(e) => {e.preventDefault();!isBombClicked && onLongClickCell(index);}}
         style={isPaused ? unmountedStyle : mountedStyle}
+        key={`mine-${index}`}
+        id={`mine-${index}`}
       >
         {(openedCellsList[index] && openedCellsList[index] !== -1 && !isPaused) || isBombClicked ? (gridValue === -1 ? flag(openedCellsList[index]) : gridValue) : ''}
       </div>

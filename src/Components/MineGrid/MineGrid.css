@@ -431,5 +431,16 @@
   }
 }
 
+.blinker {
+  animation: blinker 0.6s linear infinite !important;
+  background: rgb(44, 101, 247);
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
+
 @media only screen and (min-width: 900px) {
 }
