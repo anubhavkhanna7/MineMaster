@@ -65,9 +65,13 @@ function MineGrid({isDarkMode}: {isDarkMode: boolean}) {
       let bombClicked = false;
       if (selectedIndex < mineSize) {
         if (selectedIndex === 0) {
+          let flagcount = 0;
+          updatedOpenedCellList[selectedIndex + 1] === -1 && flagcount++;
+          updatedOpenedCellList[selectedIndex + mineSize] === -1 && flagcount++;
+          updatedOpenedCellList[selectedIndex + mineSize + 1] === -1 && flagcount++;
           if (updatedOpenedCellList[selectedIndex + 1] !== -1 && updatedOpenedCellList[selectedIndex + mineSize] !== -1 && updatedOpenedCellList[selectedIndex + mineSize + 1] !== -1) {
             blinkerTile([selectedIndex + 1, selectedIndex + mineSize, selectedIndex + mineSize + 1]);
-          } else {
+          } else if(flagcount === generatedGrid[selectedIndex]) {
             if (updatedOpenedCellList[selectedIndex + 1] !== -1) {
               updatedOpenedCellList[selectedIndex + 1] = 1;
               updatedOpenedCellList = generatedGrid[selectedIndex + 1] === 0 ? openSurroundingCells(selectedIndex+1, updatedOpenedCellList, generatedGrid, mineSize) : updatedOpenedCellList;
@@ -85,9 +89,13 @@ function MineGrid({isDarkMode}: {isDarkMode: boolean}) {
             }
           }
         } else if (selectedIndex === mineSize-1) {
+          let flagcount = 0;
+          updatedOpenedCellList[selectedIndex - 1] === -1 && flagcount++;
+          updatedOpenedCellList[selectedIndex + mineSize] === -1 && flagcount++;
+          updatedOpenedCellList[selectedIndex + mineSize - 1] === -1 && flagcount++;
           if (updatedOpenedCellList[selectedIndex - 1] !== -1 && updatedOpenedCellList[selectedIndex + mineSize] !== -1 && updatedOpenedCellList[selectedIndex + mineSize - 1] !== -1) {
             blinkerTile([selectedIndex - 1, selectedIndex + mineSize, selectedIndex + mineSize - 1]);
-          } else {
+          } else if(flagcount === generatedGrid[selectedIndex]) {
             if (updatedOpenedCellList[selectedIndex - 1] !== -1) {
               updatedOpenedCellList[selectedIndex - 1] = 1;
               updatedOpenedCellList = generatedGrid[selectedIndex - 1] === 0 ? openSurroundingCells(selectedIndex-1, updatedOpenedCellList, generatedGrid, mineSize) : updatedOpenedCellList;
@@ -105,13 +113,19 @@ function MineGrid({isDarkMode}: {isDarkMode: boolean}) {
             }
           }
         } else {
+          let flagcount = 0;
+          updatedOpenedCellList[selectedIndex + 1] === -1 && flagcount++;
+          updatedOpenedCellList[selectedIndex - 1] === -1 && flagcount++;
+          updatedOpenedCellList[selectedIndex + mineSize] === -1 && flagcount++;
+          updatedOpenedCellList[selectedIndex + mineSize + 1] === -1 && flagcount++;
+          updatedOpenedCellList[selectedIndex + mineSize - 1] === -1 && flagcount++;
           if (updatedOpenedCellList[selectedIndex + 1] !== -1
             && updatedOpenedCellList[selectedIndex - 1] !== -1
             && updatedOpenedCellList[selectedIndex + mineSize] !== -1
             && updatedOpenedCellList[selectedIndex + mineSize + 1] !== -1
             && updatedOpenedCellList[selectedIndex + mineSize - 1] !== -1) {
               blinkerTile([selectedIndex + 1, selectedIndex - 1, selectedIndex + mineSize, selectedIndex + mineSize + 1, selectedIndex + mineSize - 1]);
-          } else {
+          } else if (flagcount === generatedGrid[selectedIndex]) {
             if (updatedOpenedCellList[selectedIndex + 1] !== -1) {
               updatedOpenedCellList[selectedIndex + 1] = 1;
               updatedOpenedCellList = generatedGrid[selectedIndex + 1] === 0 ? openSurroundingCells(selectedIndex + 1, updatedOpenedCellList, generatedGrid, mineSize) : updatedOpenedCellList;
@@ -141,9 +155,13 @@ function MineGrid({isDarkMode}: {isDarkMode: boolean}) {
         }
       } else if (selectedIndex >= (mineSize*(mineSize-1))) {
         if (selectedIndex%mineSize === 0) {
+          let flagcount = 0;
+          updatedOpenedCellList[selectedIndex + 1] === -1 && flagcount++;
+          updatedOpenedCellList[selectedIndex - mineSize] === -1 && flagcount++;
+          updatedOpenedCellList[selectedIndex - mineSize + 1] === -1 && flagcount++;
           if (updatedOpenedCellList[selectedIndex + 1] !== -1 && updatedOpenedCellList[selectedIndex - mineSize] !== -1 && updatedOpenedCellList[selectedIndex - mineSize + 1] !== -1) {
             blinkerTile([selectedIndex + 1, selectedIndex - mineSize, selectedIndex - mineSize + 1]);
-          } else {
+          } else if (flagcount === generatedGrid[selectedIndex]) {
             if (updatedOpenedCellList[selectedIndex + 1] !== -1) {
               updatedOpenedCellList[selectedIndex + 1] = 1;
               updatedOpenedCellList = generatedGrid[selectedIndex + 1] === 0 ? openSurroundingCells(selectedIndex + 1, updatedOpenedCellList, generatedGrid, mineSize) : updatedOpenedCellList;
@@ -161,9 +179,13 @@ function MineGrid({isDarkMode}: {isDarkMode: boolean}) {
             }
           }
         } else if (selectedIndex%mineSize === mineSize-1) {
+          let flagcount = 0;
+          updatedOpenedCellList[selectedIndex - 1] === -1 && flagcount++;
+          updatedOpenedCellList[selectedIndex - mineSize] === -1 && flagcount++;
+          updatedOpenedCellList[selectedIndex - mineSize - 1] === -1 && flagcount++;
           if (updatedOpenedCellList[selectedIndex - 1] !== -1 && updatedOpenedCellList[selectedIndex - mineSize] !== -1 && updatedOpenedCellList[selectedIndex - mineSize - 1] !== -1) {
             blinkerTile([selectedIndex - 1, selectedIndex - mineSize, selectedIndex - mineSize - 1]);
-          } else {
+          } else if (flagcount === generatedGrid[selectedIndex]) {
             if (updatedOpenedCellList[selectedIndex - 1] !== -1) {
               updatedOpenedCellList[selectedIndex - 1] = 1;
               updatedOpenedCellList = generatedGrid[selectedIndex - 1] === 0 ? openSurroundingCells(selectedIndex - 1, updatedOpenedCellList, generatedGrid, mineSize) : updatedOpenedCellList;
@@ -181,13 +203,19 @@ function MineGrid({isDarkMode}: {isDarkMode: boolean}) {
             }
           }
         } else {
+          let flagcount = 0;
+          updatedOpenedCellList[selectedIndex + 1] === -1 && flagcount++;
+          updatedOpenedCellList[selectedIndex - 1] === -1 && flagcount++;
+          updatedOpenedCellList[selectedIndex - mineSize] === -1 && flagcount++;
+          updatedOpenedCellList[selectedIndex - mineSize + 1] === -1 && flagcount++;
+          updatedOpenedCellList[selectedIndex - mineSize - 1] === -1 && flagcount++;
           if (updatedOpenedCellList[selectedIndex + 1] !== -1
             && updatedOpenedCellList[selectedIndex - 1] !== -1
             && updatedOpenedCellList[selectedIndex - mineSize] !== -1
             && updatedOpenedCellList[selectedIndex - mineSize + 1] !== -1
             && updatedOpenedCellList[selectedIndex - mineSize - 1] !== -1) {
               blinkerTile([selectedIndex + 1, selectedIndex - 1, selectedIndex - mineSize, selectedIndex - mineSize + 1, selectedIndex - mineSize - 1]);
-          } else {
+          } else if (flagcount === generatedGrid[selectedIndex]) {
             if (updatedOpenedCellList[selectedIndex + 1] !== -1) {
               updatedOpenedCellList[selectedIndex + 1] = 1;
               updatedOpenedCellList = generatedGrid[selectedIndex + 1] === 0 ? openSurroundingCells(selectedIndex + 1, updatedOpenedCellList, generatedGrid, mineSize) : updatedOpenedCellList;
@@ -217,13 +245,19 @@ function MineGrid({isDarkMode}: {isDarkMode: boolean}) {
         }
       } else {
         if (selectedIndex%mineSize === 0) {
+          let flagcount = 0;
+          updatedOpenedCellList[selectedIndex + 1] === -1 && flagcount++;
+          updatedOpenedCellList[selectedIndex - mineSize] === -1 && flagcount++;
+          updatedOpenedCellList[selectedIndex + mineSize] === -1 && flagcount++;
+          updatedOpenedCellList[selectedIndex - mineSize + 1] === -1 && flagcount++;
+          updatedOpenedCellList[selectedIndex + mineSize + 1] === -1 && flagcount++;
           if (updatedOpenedCellList[selectedIndex + 1] !== -1
             && updatedOpenedCellList[selectedIndex + mineSize] !== -1
             && updatedOpenedCellList[selectedIndex + mineSize + 1] !== -1
             && updatedOpenedCellList[selectedIndex - mineSize] !== -1
             && updatedOpenedCellList[selectedIndex - mineSize + 1] !== -1) {
               blinkerTile([selectedIndex + 1, selectedIndex + mineSize, selectedIndex + mineSize + 1, selectedIndex - mineSize, selectedIndex - mineSize + 1]);
-          } else {
+          } else if (flagcount === generatedGrid[selectedIndex]) {
             if (updatedOpenedCellList[selectedIndex + 1] !== -1) {
               updatedOpenedCellList[selectedIndex + 1] = 1;
               updatedOpenedCellList = generatedGrid[selectedIndex + 1] === 0 ? openSurroundingCells(selectedIndex + 1, updatedOpenedCellList, generatedGrid, mineSize) : updatedOpenedCellList;
@@ -251,13 +285,19 @@ function MineGrid({isDarkMode}: {isDarkMode: boolean}) {
             }
           }
         } else if (selectedIndex%mineSize === mineSize - 1) {
+          let flagcount = 0;
+          updatedOpenedCellList[selectedIndex - 1] === -1 && flagcount++;
+          updatedOpenedCellList[selectedIndex + mineSize] === -1 && flagcount++;
+          updatedOpenedCellList[selectedIndex - mineSize] === -1 && flagcount++;
+          updatedOpenedCellList[selectedIndex + mineSize - 1] === -1 && flagcount++;
+          updatedOpenedCellList[selectedIndex - mineSize - 1] === -1 && flagcount++;
           if (updatedOpenedCellList[selectedIndex - 1] !== -1
             && updatedOpenedCellList[selectedIndex + mineSize] !== -1
             && updatedOpenedCellList[selectedIndex + mineSize - 1] !== -1
             && updatedOpenedCellList[selectedIndex - mineSize] !== -1
             && updatedOpenedCellList[selectedIndex - mineSize - 1] !== -1) {
             blinkerTile([selectedIndex - 1, selectedIndex + mineSize, selectedIndex + mineSize - 1, selectedIndex - mineSize, selectedIndex - mineSize - 1]);
-          } else {
+          } else if (flagcount === generatedGrid[selectedIndex]) {
             if (updatedOpenedCellList[selectedIndex - 1] !== -1) {
               updatedOpenedCellList[selectedIndex - 1] = 1;
               updatedOpenedCellList = generatedGrid[selectedIndex - 1] === 0 ? openSurroundingCells(selectedIndex - 1, updatedOpenedCellList, generatedGrid, mineSize) : updatedOpenedCellList;
@@ -285,6 +325,15 @@ function MineGrid({isDarkMode}: {isDarkMode: boolean}) {
             }
           }
         } else {
+          let flagcount = 0;
+          updatedOpenedCellList[selectedIndex + 1] === -1 && flagcount++;
+          updatedOpenedCellList[selectedIndex - 1] === -1 && flagcount++;
+          updatedOpenedCellList[selectedIndex - mineSize] === -1 && flagcount++;
+          updatedOpenedCellList[selectedIndex + mineSize] === -1 && flagcount++;
+          updatedOpenedCellList[selectedIndex - mineSize + 1] === -1 && flagcount++;
+          updatedOpenedCellList[selectedIndex - mineSize - 1] === -1 && flagcount++;
+          updatedOpenedCellList[selectedIndex + mineSize + 1] === -1 && flagcount++;
+          updatedOpenedCellList[selectedIndex + mineSize - 1] === -1 && flagcount++;
           if (updatedOpenedCellList[selectedIndex + 1] !== -1
             && updatedOpenedCellList[selectedIndex - 1] !== -1
             && updatedOpenedCellList[selectedIndex + mineSize] !== -1
@@ -294,7 +343,7 @@ function MineGrid({isDarkMode}: {isDarkMode: boolean}) {
             && updatedOpenedCellList[selectedIndex + mineSize + 1] !== -1
             && updatedOpenedCellList[selectedIndex - mineSize + 1] !== -1) {
             blinkerTile([selectedIndex + 1, selectedIndex - 1, selectedIndex + mineSize, selectedIndex + mineSize - 1, selectedIndex + mineSize + 1,selectedIndex - mineSize, selectedIndex - mineSize -1, selectedIndex - mineSize + 1]);
-          } else {
+          } else if (flagcount === generatedGrid[selectedIndex]) {
             if (updatedOpenedCellList[selectedIndex + 1] !== -1) {
               updatedOpenedCellList[selectedIndex + 1] = 1;
               updatedOpenedCellList = generatedGrid[selectedIndex + 1] === 0 ? openSurroundingCells(selectedIndex + 1, updatedOpenedCellList, generatedGrid, mineSize) : updatedOpenedCellList;
