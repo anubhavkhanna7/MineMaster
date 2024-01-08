@@ -41,19 +41,204 @@ function MineGrid({isDarkMode}: {isDarkMode: boolean}) {
   const onClickCell = (selectedIndex: number) => {
     const updatedOpenedCellList = [...openedCellsList];
 
-    if (generatedGrid[selectedIndex]) {
-      generatedGrid[selectedIndex] === -1 && setIsBombClicked(true);
+    if (generatedGrid[selectedIndex] === -1) {
+      setIsBombClicked(true);
       updatedOpenedCellList[selectedIndex] = 1;
       setOpenedCellsList(updatedOpenedCellList)
-    } else {
+    } else if (generatedGrid[selectedIndex] === 0) {
       setOpenedCellsList(openSurroundingCells(selectedIndex, updatedOpenedCellList, generatedGrid, mineSize));
+    } else if (updatedOpenedCellList[selectedIndex] === 1) {
+      let bombClicked = false;
+      if (selectedIndex < mineSize) {
+        if (selectedIndex === 0) {
+          if (updatedOpenedCellList[selectedIndex + 1] !== -1) {
+            updatedOpenedCellList[selectedIndex + 1] = 1;
+            bombClicked = bombClicked || generatedGrid[selectedIndex + 1] === -1;
+          }
+          if (updatedOpenedCellList[selectedIndex + mineSize] !== -1) {
+            updatedOpenedCellList[selectedIndex + mineSize] = 1;
+            bombClicked = bombClicked || generatedGrid[selectedIndex + mineSize] === -1;
+          }
+          if (updatedOpenedCellList[selectedIndex + mineSize + 1] !== -1) {
+            updatedOpenedCellList[selectedIndex + mineSize + 1] = 1;
+            bombClicked = bombClicked || generatedGrid[selectedIndex + mineSize + 1] === -1;
+          }
+        } else if (selectedIndex === mineSize-1) {
+          if (updatedOpenedCellList[selectedIndex - 1] !== -1) {
+            updatedOpenedCellList[selectedIndex - 1] = 1;
+            bombClicked = bombClicked || generatedGrid[selectedIndex - 1] === -1;
+          }
+          if (updatedOpenedCellList[selectedIndex + mineSize] !== -1) {
+            updatedOpenedCellList[selectedIndex + mineSize] = 1;
+            bombClicked = bombClicked || generatedGrid[selectedIndex + mineSize] === -1;
+          }
+          if (updatedOpenedCellList[selectedIndex + mineSize - 1] !== -1) {
+            updatedOpenedCellList[selectedIndex + mineSize - 1] = 1;
+            bombClicked = bombClicked || generatedGrid[selectedIndex + mineSize - 1] === -1;
+          }
+        } else {
+          if (updatedOpenedCellList[selectedIndex + 1] !== -1) {
+            updatedOpenedCellList[selectedIndex + 1] = 1;
+            bombClicked = bombClicked || generatedGrid[selectedIndex + 1] === -1;
+          }
+          if (updatedOpenedCellList[selectedIndex - 1] !== -1) {
+            updatedOpenedCellList[selectedIndex - 1] = 1;
+            bombClicked = bombClicked || generatedGrid[selectedIndex - 1] === -1;
+          }
+          if (updatedOpenedCellList[selectedIndex + mineSize] !== -1) {
+            updatedOpenedCellList[selectedIndex + mineSize] = 1;
+            bombClicked = bombClicked || generatedGrid[selectedIndex + mineSize] === -1;
+          }
+          if (updatedOpenedCellList[selectedIndex + mineSize + 1] !== -1) {
+            updatedOpenedCellList[selectedIndex + mineSize + 1] = 1;
+            bombClicked = bombClicked || generatedGrid[selectedIndex + mineSize + 1] === -1;
+          }
+          if (updatedOpenedCellList[selectedIndex + mineSize - 1] !== -1) {
+            updatedOpenedCellList[selectedIndex + mineSize - 1] = 1;
+            bombClicked = bombClicked || generatedGrid[selectedIndex + mineSize - 1] === -1;
+          }
+        }
+      } else if (selectedIndex >= (mineSize*(mineSize-1))) {
+        if (selectedIndex%mineSize === 0) {
+          if (updatedOpenedCellList[selectedIndex + 1] !== -1) {
+            updatedOpenedCellList[selectedIndex + 1] = 1;
+            bombClicked = bombClicked || generatedGrid[selectedIndex + 1] === -1;
+          }
+          if (updatedOpenedCellList[selectedIndex - mineSize] !== -1) {
+            updatedOpenedCellList[selectedIndex - mineSize] = 1;
+            bombClicked = bombClicked || generatedGrid[selectedIndex - mineSize] === -1;
+          }
+          if (updatedOpenedCellList[selectedIndex - mineSize + 1] !== -1) {
+            updatedOpenedCellList[selectedIndex - mineSize + 1] = 1;
+            bombClicked = bombClicked || generatedGrid[selectedIndex - mineSize + 1] === -1;
+          }
+        } else if (selectedIndex%mineSize === mineSize-1) {
+          if (updatedOpenedCellList[selectedIndex - 1] !== -1) {
+            updatedOpenedCellList[selectedIndex - 1] = 1;
+            bombClicked = bombClicked || generatedGrid[selectedIndex - 1] === -1;
+          }
+          if (updatedOpenedCellList[selectedIndex - mineSize] !== -1) {
+            updatedOpenedCellList[selectedIndex - mineSize] = 1;
+            bombClicked = bombClicked || generatedGrid[selectedIndex - mineSize] === -1;
+          }
+          if (updatedOpenedCellList[selectedIndex - mineSize - 1] !== -1) {
+            updatedOpenedCellList[selectedIndex - mineSize - 1] = 1;
+            bombClicked = bombClicked || generatedGrid[selectedIndex - mineSize - 1] === -1;
+          }
+        } else {
+          if (updatedOpenedCellList[selectedIndex + 1] !== -1) {
+            updatedOpenedCellList[selectedIndex + 1] = 1;
+            bombClicked = bombClicked || generatedGrid[selectedIndex + 1] === -1;
+          }
+          if (updatedOpenedCellList[selectedIndex - 1] !== -1) {
+            updatedOpenedCellList[selectedIndex - 1] = 1;
+            bombClicked = bombClicked || generatedGrid[selectedIndex - 1] === -1;
+          }
+          if (updatedOpenedCellList[selectedIndex - mineSize] !== -1) {
+            updatedOpenedCellList[selectedIndex - mineSize] = 1;
+            bombClicked = bombClicked || generatedGrid[selectedIndex - mineSize] === -1;
+          }
+          if (updatedOpenedCellList[selectedIndex - mineSize + 1] !== -1) {
+            updatedOpenedCellList[selectedIndex - mineSize + 1] = 1;
+            bombClicked = bombClicked || generatedGrid[selectedIndex - mineSize + 1] === -1;
+          }
+          if (updatedOpenedCellList[selectedIndex - mineSize - 1] !== -1) {
+            updatedOpenedCellList[selectedIndex - mineSize - 1] = 1;
+            bombClicked = bombClicked || generatedGrid[selectedIndex - mineSize - 1] === -1;
+          }
+        }
+      } else {
+        if (selectedIndex%mineSize === 0) {
+          if (updatedOpenedCellList[selectedIndex + 1] !== -1) {
+            updatedOpenedCellList[selectedIndex + 1] = 1;
+            bombClicked = bombClicked || generatedGrid[selectedIndex + 1] === -1;
+          }
+          if (updatedOpenedCellList[selectedIndex + mineSize] !== -1) {
+            updatedOpenedCellList[selectedIndex + mineSize] = 1;
+            bombClicked = bombClicked || generatedGrid[selectedIndex + mineSize] === -1;
+          }
+          if (updatedOpenedCellList[selectedIndex + mineSize + 1] !== -1) {
+            updatedOpenedCellList[selectedIndex + mineSize + 1] = 1;
+            bombClicked = bombClicked || generatedGrid[selectedIndex + mineSize + 1] === -1;
+          }
+          if (updatedOpenedCellList[selectedIndex - mineSize] !== -1) {
+            updatedOpenedCellList[selectedIndex - mineSize] = 1;
+            bombClicked = bombClicked || generatedGrid[selectedIndex - mineSize] === -1;
+          }
+          if (updatedOpenedCellList[selectedIndex - mineSize + 1] !== -1) {
+            updatedOpenedCellList[selectedIndex - mineSize + 1] = 1;
+            bombClicked = bombClicked || generatedGrid[selectedIndex - mineSize + 1] === -1;
+          }
+        } else if (selectedIndex%mineSize === mineSize - 1) {
+          if (updatedOpenedCellList[selectedIndex - 1] !== -1) {
+            updatedOpenedCellList[selectedIndex - 1] = 1;
+            bombClicked = bombClicked || generatedGrid[selectedIndex - 1] === -1;
+          }
+          if (updatedOpenedCellList[selectedIndex + mineSize] !== -1) {
+            updatedOpenedCellList[selectedIndex + mineSize] = 1;
+            bombClicked = bombClicked || generatedGrid[selectedIndex + mineSize] === -1;
+          }
+          if (updatedOpenedCellList[selectedIndex + mineSize - 1] !== -1) {
+            updatedOpenedCellList[selectedIndex + mineSize - 1] = 1;
+            bombClicked = bombClicked || generatedGrid[selectedIndex + mineSize - 1] === -1;
+          }
+          if (updatedOpenedCellList[selectedIndex - mineSize] !== -1) {
+            updatedOpenedCellList[selectedIndex - mineSize] = 1;
+            bombClicked = bombClicked || generatedGrid[selectedIndex - mineSize] === -1;
+          }
+          if (updatedOpenedCellList[selectedIndex - mineSize - 1] !== -1) {
+            updatedOpenedCellList[selectedIndex - mineSize - 1] = 1;
+            bombClicked = bombClicked || generatedGrid[selectedIndex - mineSize - 1] === -1;
+          }
+        } else {
+          if (updatedOpenedCellList[selectedIndex + 1] !== -1) {
+            updatedOpenedCellList[selectedIndex + 1] = 1;
+            bombClicked = bombClicked || generatedGrid[selectedIndex + 1] === -1;
+          }
+          if (updatedOpenedCellList[selectedIndex - 1] !== -1) {
+            updatedOpenedCellList[selectedIndex - 1] = 1;
+            bombClicked = bombClicked || generatedGrid[selectedIndex - 1] === -1;
+          }
+          if (updatedOpenedCellList[selectedIndex + mineSize] !== -1) {
+            updatedOpenedCellList[selectedIndex + mineSize] = 1;
+            bombClicked = bombClicked || generatedGrid[selectedIndex + mineSize] === -1;
+          }
+          if (updatedOpenedCellList[selectedIndex + mineSize - 1] !== -1) {
+            updatedOpenedCellList[selectedIndex + mineSize - 1] = 1;
+            bombClicked = bombClicked || generatedGrid[selectedIndex + mineSize - 1] === -1;
+          }
+          if (updatedOpenedCellList[selectedIndex + mineSize + 1] !== -1) {
+            updatedOpenedCellList[selectedIndex + mineSize + 1] = 1;
+            bombClicked = bombClicked || generatedGrid[selectedIndex + mineSize + 1] === -1;
+          }
+          if (updatedOpenedCellList[selectedIndex - mineSize] !== -1) {
+            updatedOpenedCellList[selectedIndex - mineSize] = 1;
+            bombClicked = bombClicked || generatedGrid[selectedIndex - mineSize] === -1;
+          }
+          if (updatedOpenedCellList[selectedIndex - mineSize - 1] !== -1) {
+            updatedOpenedCellList[selectedIndex - mineSize - 1] = 1;
+            bombClicked = bombClicked || generatedGrid[selectedIndex - mineSize - 1] === -1;
+          }
+          if (updatedOpenedCellList[selectedIndex - mineSize + 1] !== -1) {
+            updatedOpenedCellList[selectedIndex - mineSize + 1] = 1;
+            bombClicked = bombClicked || generatedGrid[selectedIndex - mineSize + 1] === -1;
+          }
+        }
+      }
+      setOpenedCellsList(updatedOpenedCellList);
+      setIsBombClicked(bombClicked);
+    } else {
+      updatedOpenedCellList[selectedIndex] = 1;
+      setOpenedCellsList(updatedOpenedCellList);
     }
   }
 
   const onLongClickCell = (selectedIndex: number) => {
     const updatedOpenedCellList = [...openedCellsList];
-    updatedOpenedCellList[selectedIndex] = updatedOpenedCellList[selectedIndex] === -1 ? 0 : -1;
-    setOpenedCellsList(updatedOpenedCellList);
+    if (updatedOpenedCellList[selectedIndex] !== 1) {
+      updatedOpenedCellList[selectedIndex] = updatedOpenedCellList[selectedIndex] === -1 ? 0 : -1;
+      setOpenedCellsList(updatedOpenedCellList);
+    }
   }
 
   const flag = (openStatus: number) => (
