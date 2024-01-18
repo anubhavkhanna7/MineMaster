@@ -5,8 +5,8 @@ import './MineGrid.css'
 import { matchAllOpenedTiles, openSurroundingCells } from '../../utils/Utilities';
 import Timer from './Timer';
 
-function MineGrid({isDarkMode}: {isDarkMode: boolean}) {
-  const mineSize = 9, dificulty = 'EASY';
+function MineGrid({isDarkMode, selectedDificulty}: {isDarkMode: boolean, selectedDificulty: string}) {
+  const mineSize = 9;
   const [isBombClicked, setIsBombClicked] = useState(false);
   const [allMinesIsolated, setAllMinesIsolated] = useState(false);
   const [openedCellsList, setOpenedCellsList] = useState(new Array(mineSize*mineSize).fill(0));
@@ -14,7 +14,7 @@ function MineGrid({isDarkMode}: {isDarkMode: boolean}) {
   const [isPaused, setPausedState] = useState(false);
   
   useEffect(() => {
-    updateGeneratedGrid(calculateMatrix(mineSize, dificulty));
+    updateGeneratedGrid(calculateMatrix(mineSize, selectedDificulty));
   }, []);
 
   useEffect(() => {
@@ -434,7 +434,7 @@ function MineGrid({isDarkMode}: {isDarkMode: boolean}) {
 
   const onResetClick = () => {
     setOpenedCellsList(new Array(mineSize*mineSize).fill(0));
-    updateGeneratedGrid(calculateMatrix(mineSize, dificulty));
+    updateGeneratedGrid(calculateMatrix(mineSize, selectedDificulty));
     setIsBombClicked(false);
     setAllMinesIsolated(false);
   }

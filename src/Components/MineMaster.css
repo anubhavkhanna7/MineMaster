@@ -53,6 +53,141 @@ body {
   margin: 0 0 0 0;
 }
 
+.overlayLight {
+  color: black;
+  background: rgb(234, 213, 181);
+}
+
+.crossDark {
+  background-color: black;
+}
+
+.crossDark::after {
+  content: " ";
+  background-color: black;
+}
+
+.option {
+  cursor: pointer;
+  margin-bottom: 5%;
+  text-align: center;
+}
+
+.optionDark {
+  cursor: pointer;
+  margin-bottom: 5%;
+  text-align: center;
+}
+
+.optionsOverlay {
+  position: absolute;
+  color: white;
+  background: black;
+  font-family: 'Monoton';
+  font-weight: 600;
+  width: 80vw;
+  z-index: 4;
+  opacity: 0.90;
+  top: 50vh;
+  left: 10vw;
+  border-radius: 10px;
+  font-size: 16px;
+}
+
+.cross {
+  width:2px;
+  height: 10px;
+  transform: rotate(40deg);
+  margin-left: 95%;
+  margin-top: 2%;
+  background-color: white;
+  margin-bottom: 15%;
+}
+.cross::after {
+  content: " ";
+  width: 2px;
+  height: 10px;
+  transform: rotate(281deg);
+  background-color: white;
+  position: absolute;
+  margin-left: -0.5px;
+  margin-top: -0.5px;
+}
+
+.crossDark {
+  width:2px;
+  height: 10px;
+  transform: rotate(40deg);
+  margin-left: 95%;
+  margin-top: 2%;
+  background-color: black;
+  margin-bottom: 15%;
+}
+.crossDark::after {
+  content: " ";
+  width: 2px;
+  height: 10px;
+  transform: rotate(281deg);
+  background-color: black;
+  position: absolute;
+  margin-left: -0.5px;
+  margin-top: -0.5px;
+}
+
+.option:not(:last-child)::after {
+  width: 40%;
+  height: 0.04px;
+  content: "";
+  background-color: #fff;
+  position: absolute;
+  margin-top: 10%;
+  left: 30%;
+}
+.optionDark {
+  cursor: pointer;
+  margin-bottom: 5%;
+}
+.optionDark:not(:last-child)::after {
+  width: 40%;
+  height: 0.04px;
+  content: "";
+  background-color: white;
+  position: absolute;
+  margin-top: 10%;
+  left: 30%;
+}
+
+.arrow {
+  border-top: 2px solid white;
+  border-left: 2px solid white;
+  height: 10px;
+  width: 10px;
+  transform: rotate(315deg);
+  position: absolute;
+  top: 3vh;
+  left: 1vw;
+  cursor: pointer;
+}
+
+.arrowLight {
+  border-top: 2px solid black;
+  border-left: 2px solid black;
+}
+
+.arrow::after {
+  content: '';
+  position: absolute;
+  width: 2vw;
+  height: 2px;
+  background: white;
+  transform: rotate(45deg) translate(3px, 8.5px);
+}
+
+.arrowLight.arrow::after {
+  background: black;
+}
+
+
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
   .title {
@@ -63,10 +198,24 @@ body {
     margin-bottom: 35%;
   }
 
+  .arrow {
+    top: 2vh;
+    left: 2vw;
+  }
+
+  .arrow::after {
+    content: '';
+    position: absolute;
+    width: 4vw;
+    height: 2px;
+    background: white;
+    transform: rotate(45deg) translate(-2px, 8.5px);
+  }
+
   .title-top {
     font-family: Monoton;
     font-size: 4vh;
-    transform: translate(-55px, -14vh);
+    transform: translate(-40px, -14vh);
   }
 
   .btnContainer {
@@ -87,6 +236,70 @@ body {
     display: flex;
     flex-direction: column;
     text-align: center;
+  }
+  
+  .cross {
+    width:2px;
+    height: 10px;
+    transform: rotate(40deg);
+    margin-left: 95%;
+    margin-top: 2%;
+    background-color: white;
+    margin-bottom: 15%;
+  }
+  .cross::after {
+    content: " ";
+    width: 2px;
+    height: 10px;
+    transform: rotate(281deg);
+    background-color: white;
+    position: absolute;
+    margin-left: -0.5px;
+    margin-top: -0.5px;
+  }
+
+  .crossDark {
+    width:2px;
+    height: 10px;
+    transform: rotate(40deg);
+    margin-left: 95%;
+    margin-top: 2%;
+    background-color: white;
+    margin-bottom: 15%;
+  }
+  .crossDark::after {
+    content: " ";
+    width: 2px;
+    height: 10px;
+    transform: rotate(281deg);
+    background-color: white;
+    position: absolute;
+    margin-left: -0.5px;
+    margin-top: -0.5px;
+  }
+
+  
+  .option:not(:last-child)::after {
+    width: 40%;
+    height: 0.04px;
+    content: "";
+    background-color: #fff;
+    position: absolute;
+    margin-top: 10%;
+    left: 30%;
+  }
+  .optionDark {
+    cursor: pointer;
+    margin-bottom: 5%;
+  }
+  .optionDark:not(:last-child)::after {
+    width: 40%;
+    height: 0.04px;
+    content: "";
+    background-color: white;
+    position: absolute;
+    margin-top: 10%;
+    left: 30%;
   }
 }
 
@@ -116,7 +329,7 @@ body {
 }
 
 /* Medium devices (landscape tablets, 768px and up) */
-@media only screen and (min-width: 768px) {
+@media only screen and (min-width: 750px) {
   .title {
     font-family: Monoton;
     font-size: 13vh;
@@ -139,6 +352,19 @@ body {
   .btnContainer div {
     margin-bottom: 5%;
   }
+
+  .option:not(:last-child)::after {
+    margin-top: 7%;
+  }
+
+  .optionDark:not(:last-child)::after {
+    margin-top: 7%;
+  }
+
+  .arrow::after {
+    width: 3vw;
+    transform: rotate(45deg) translate(3px, 7px);
+  }
 }
 
 @media only screen and (min-width: 900px) {
@@ -153,6 +379,63 @@ body {
     font-size: 4vh;
     transform: translate(-6vw, -7vh);
   }
+
+  .optionsOverlay {
+    position: absolute;
+    color: white;
+    background: black;
+    font-family: 'Monoton';
+    font-weight: 600;
+    width: 80vw;
+    z-index: 4;
+    opacity: 0.90;
+    top: 50vh;
+    left: 10vw;
+    border-radius: 10px;
+    font-size: 16px;
+    height: 45vh;
+  }
+
+  .cross {
+    margin-bottom: 5%;
+  }
+
+  .crossDark {
+    margin-bottom: 5%;
+  }
+
+  .option {
+    margin-bottom: 2%;
+  }
+  
+  .optionDark {
+    margin-bottom: 2%;
+  }
+
+  .option:not(:last-child)::after {
+    margin-top: 3.5%;
+  }
+
+  .optionDark:not(:last-child)::after {
+    margin-top: 3.5%;
+    background-color: #fff;
+  }
+
+  .arrow::after {
+    transform: rotate(45deg) translate(2px, 8px);
+  }
+
+  .mineTile:nth-child(9n+1) {
+    margin-left: 3%;
+  }
+}
+
+@media only screen and (min-width: 900px) and (min-height: 1300px) {
+  .title-top {
+    font-family: Monoton;
+    font-size: 4vh;
+    transform: translate(-3vw, -4vh);
+  }
 }
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
@@ -161,11 +444,40 @@ body {
     font-family: Monoton;
     font-size: 20vh;
     transition: transform 750ms ease;
-    margin: 7% 0 15% 8%;
+    /* margin: 7% 0 15% 8%; */
   }
   .title-top {
     font-family: Monoton;
     font-size: 4vh;
     transform: translate(-6vw, -11vh);
+  }
+
+  .btnContainer {
+    margin-top: 20vh;
+  }
+
+  .cross {
+    margin-bottom: 5%;
+  }
+
+  .crossDark {
+    margin-bottom: 5%;
+  }
+
+  .option {
+    margin-bottom: 2%;
+  }
+  
+  .optionDark {
+    margin-bottom: 2%;
+  }
+
+  .option:not(:last-child)::after {
+    margin-top: 3.5%;
+  }
+
+  .optionDark:not(:last-child)::after {
+    margin-top: 3.5%;
+    background-color: #fff;
   }
 }
