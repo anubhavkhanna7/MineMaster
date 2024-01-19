@@ -257,7 +257,7 @@
 }
 
 .statsContainer .statsHeader {
-  margin-left: 33vw;
+  margin: auto;
 }
 
 .statsContainer span:not(.statsHeader) {

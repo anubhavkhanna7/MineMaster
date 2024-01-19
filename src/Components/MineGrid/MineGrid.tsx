@@ -465,7 +465,7 @@ function MineGrid({isDarkMode, selectedDificulty}: {isDarkMode: boolean, selecte
     // console.log(stats)
     return (
       <div className='statsContainer'>
-        <span className='statsHeader'>STATS</span>
+        <span className='statsHeader'>STATS: {selectedDificulty}</span>
         <span>Games Played : {gameStats.gamesPlayed}</span>
         <span>Games Won : {gameStats.wins}</span>
         <span>Games Lost : {gameStats.losses}</span>
