@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/MineMaster/static/css/main.be033a58.css",
-    "main.js": "/MineMaster/static/js/main.a32afdfd.js",
+    "main.css": "/MineMaster/static/css/main.e5fa0ed8.css",
+    "main.js": "/MineMaster/static/js/main.bdf9bcc5.js",
     "static/js/787.3af10c4b.chunk.js": "/MineMaster/static/js/787.3af10c4b.chunk.js",
     "static/media/Monoton-Regular.ttf": "/MineMaster/static/media/Monoton-Regular.1f3bd420f1198c5c85e8.ttf",
     "index.html": "/MineMaster/index.html",
-    "main.be033a58.css.map": "/MineMaster/static/css/main.be033a58.css.map",
-    "main.a32afdfd.js.map": "/MineMaster/static/js/main.a32afdfd.js.map",
+    "main.e5fa0ed8.css.map": "/MineMaster/static/css/main.e5fa0ed8.css.map",
+    "main.bdf9bcc5.js.map": "/MineMaster/static/js/main.bdf9bcc5.js.map",
     "787.3af10c4b.chunk.js.map": "/MineMaster/static/js/787.3af10c4b.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.be033a58.css",
-    "static/js/main.a32afdfd.js"
+    "static/css/main.e5fa0ed8.css",
+    "static/js/main.bdf9bcc5.js"
   ]
 }
