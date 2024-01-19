@@ -72,3 +72,10 @@ export const matchAllOpenedTiles = (openedCellsList: Array<number>, generatedGri
   });
   return !anyNonMineTilesUnopened;
 }
+
+export const convertToTime = (timerCount: number) => {
+  const seconds = Math.abs(timerCount%60);
+  const minutes = (Math.floor(timerCount/60))%60;
+  const hours = Math.floor(timerCount/60) < 60 ? 0 : Math.floor(Math.floor(timerCount/60)/60);
+  return `${hours <= 9 ? `0${hours}` : hours} : ${minutes <= 9 ? `0${minutes}` : minutes} : ${seconds <= 9 ? `0${seconds}` : seconds}`;
+}

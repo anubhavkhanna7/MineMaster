@@ -1,18 +1,20 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, MutableRefObject, SetStateAction, useEffect } from "react";
 import './MineGrid.css'
+import { convertToTime } from "../../utils/Utilities";
 
 export default function Timer(
-    {allMinesIsolated, isBombClicked, isDarkMode, isPaused, setPausedState, onResetClick}:
+    {allMinesIsolated, isBombClicked, isDarkMode, isPaused, setPausedState, onResetClick, timer, setTimer}:
     {
       allMinesIsolated: boolean,
       isBombClicked: boolean,
       isDarkMode: boolean,
       isPaused: boolean,
       setPausedState: Dispatch<SetStateAction<boolean>>,
-      onResetClick: () => void
+      onResetClick: () => void,
+      timer: number,
+      setTimer: Dispatch<SetStateAction<number>>,
     }
   ) {
-  const [timer, setTimer] = useState(0);
 
   const checkTimer = () => {
     let prevTimer = 0;
@@ -24,7 +26,9 @@ export default function Timer(
 
   useEffect(() => {
     const id = setInterval(() => {
-      !allMinesIsolated && !isPaused && !isBombClicked && setTimer((prev) => prev + 1);
+      if (!allMinesIsolated && !isPaused && !isBombClicked) { 
+        setTimer((prev) => prev + 1);
+      }
     }, 1000);
 
     return () => {
@@ -32,13 +36,6 @@ export default function Timer(
       clearInterval(id);
     };
   }, [allMinesIsolated, isBombClicked, isPaused]);
-
-  const convertToTime = () => {
-    const seconds = Math.abs(timer%60);
-    const minutes = (Math.floor(timer/60))%60;
-    const hours = Math.floor(timer/60) < 60 ? 0 : Math.floor(Math.floor(timer/60)/60);
-    return `${hours <= 9 ? `0${hours}` : hours} : ${minutes <= 9 ? `0${minutes}` : minutes} : ${seconds <= 9 ? `0${seconds}` : seconds}`;
-  }
 
   const returnBtnClass = () => {
     if(isPaused) {
@@ -55,7 +52,7 @@ export default function Timer(
   return (
     <div className='timerContainer'>
       <div className={`timer ${isDarkMode ? 'timer-dark' : 'timer-light'}`}>
-        {convertToTime()}
+        {convertToTime(timer)}
         {!isBombClicked && (
           <div className={returnBtnClass()} onClick={() => setPausedState(!isPaused)} />
         )}

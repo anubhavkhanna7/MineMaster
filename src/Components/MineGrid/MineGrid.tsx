@@ -1,9 +1,19 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { LongPressEventType, useLongPress } from "use-long-press";
 import calculateMatrix from '../../utils/gridGenerator';
 import './MineGrid.css'
-import { matchAllOpenedTiles, openSurroundingCells } from '../../utils/Utilities';
+import { convertToTime, matchAllOpenedTiles, openSurroundingCells } from '../../utils/Utilities';
 import Timer from './Timer';
+import { findGameStatsForDificulty, updateGameStats } from '../../utils/localStorage';
+
+interface IStats {
+  gamesPlayed?: number;
+  wins?: number;
+  losses?: number;
+  winPercentage?: number;
+  bestTime?: string;
+  averageTime?: string;
+}
 
 function MineGrid({isDarkMode, selectedDificulty}: {isDarkMode: boolean, selectedDificulty: string}) {
   const mineSize = 9;
@@ -12,10 +22,21 @@ function MineGrid({isDarkMode, selectedDificulty}: {isDarkMode: boolean, selecte
   const [openedCellsList, setOpenedCellsList] = useState(new Array(mineSize*mineSize).fill(0));
   const [generatedGrid, updateGeneratedGrid] = useState(new Array(mineSize*mineSize).fill(0));
   const [isPaused, setPausedState] = useState(false);
+  const [timer, setTimer] = useState(0);
+  const [gameStats, setGameStats] = useState<IStats>({});
   
   useEffect(() => {
     updateGeneratedGrid(calculateMatrix(mineSize, selectedDificulty));
   }, []);
+
+  useEffect(() => {
+    if (allMinesIsolated) {
+      setGameStats(updateGameStats(selectedDificulty, {gameTime: convertToTime(timer), gameWon: true}));
+    }
+    if (isBombClicked) {
+      setGameStats(updateGameStats(selectedDificulty, {gameTime: convertToTime(timer), gameWon: false}));
+    }
+  }, [allMinesIsolated, timer, isBombClicked]);
 
   useEffect(() => {
     (matchAllOpenedTiles(openedCellsList, generatedGrid) && setAllMinesIsolated(true));
@@ -439,6 +460,22 @@ function MineGrid({isDarkMode, selectedDificulty}: {isDarkMode: boolean, selecte
     setAllMinesIsolated(false);
   }
 
+  const returnGameStats = () => {
+    // const stats = findGameStatsForDificulty(selectedDificulty);
+    // console.log(stats)
+    return (
+      <div className='statsContainer'>
+        <span className='statsHeader'>STATS</span>
+        <span>Games Played : {gameStats.gamesPlayed}</span>
+        <span>Games Won : {gameStats.wins}</span>
+        <span>Games Lost : {gameStats.losses}</span>
+        <span>Best Time : {gameStats.bestTime === '' ? 'No Wins Yet' : gameStats.bestTime}</span>
+        <span>Average Time : {gameStats.averageTime === '' ? 'No Wins Yet' : gameStats.averageTime}</span>
+        <span>Win Percentage : {gameStats.winPercentage?.toFixed()}%</span>
+      </div>
+    )
+  };
+
   return (
     <div className='mineGridContainer' onContextMenu={(e) => {e.preventDefault();}}>
       <Timer
@@ -448,6 +485,8 @@ function MineGrid({isDarkMode, selectedDificulty}: {isDarkMode: boolean, selecte
         isPaused={isPaused}
         onResetClick={onResetClick}
         setPausedState={setPausedState}
+        timer={timer}
+        setTimer={setTimer}
       />
       <div className={`mineContainer ${isDarkMode ? 'dark' : 'light'}`}>
         {returnMineRows()}
@@ -455,11 +494,13 @@ function MineGrid({isDarkMode, selectedDificulty}: {isDarkMode: boolean, selecte
         {isBombClicked && (
           <div className={isDarkMode ? 'pausedScreenDark' : 'pausedScreen'} style={mountedStyle} >
             <span className='gameOverText'>GAME OVER</span>
+            {returnGameStats()}
           </div>
         )}
         {!isBombClicked && allMinesIsolated && (
           <div className={isDarkMode ? 'pausedScreenDark' : 'pausedScreen'} style={mountedStyle} >
             <span className='youWinText'>YOU WIN!</span>
+            {returnGameStats()}
           </div>
         )}
         {isPaused && (

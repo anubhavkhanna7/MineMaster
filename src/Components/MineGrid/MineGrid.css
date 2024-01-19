@@ -239,14 +239,29 @@
 
 .gameOverText {
   position: absolute;
-  top: 46%;
+  top: 5%;
   left: 33%;
 }
 
 .youWinText {
   position: absolute;
-  top: 46%;
+  top: 5%;
   left: 33%;
+}
+
+.statsContainer {
+  position: absolute;
+  bottom: 5%;
+  display: flex;
+  flex-direction: column;
+}
+
+.statsContainer .statsHeader {
+  margin-left: 33vw;
+}
+
+.statsContainer span:not(.statsHeader) {
+  margin-left: 7vw;
 }
 
 .flag {
